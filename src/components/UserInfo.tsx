@@ -1,13 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react'
+import { type UserPropsDropDown} from '../shared/interfaces/user-props-drop-down'
 
-interface UserProps {
-    isOpened: boolean;
-    isMobile: boolean;
-    onToggle: () => void;
-    onClose: () => void;
-}
 
-function UserInfo({ isOpened, isMobile, onToggle, onClose }: UserProps) {
+function UserInfo({ isOpened, isMobile, onToggle, onClose }: UserPropsDropDown) {
     const [request] = useState({
         session: {
             customer_name: "Name",

@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
 import LangSwitcher from './LangSwitcher'
 import UserInfo from './UserInfo'
+import { useNavigate } from 'react-router-dom'
+import LoginModal from './LoginModal'
 
 function useMediaQuery(query: string) {
     return window.matchMedia(query).matches;
@@ -44,6 +46,25 @@ function Header() {
         };
     }, []);
 
+    // Login
+    const [showLogin, setShowLogin] = useState(false)
+    const navigate = useNavigate()
+
+    const handleAdminClick = () => {
+        const token = localStorage.getItem('token')
+
+        if (token) {
+            navigate('/admin-panel')
+        } else {
+            setShowLogin(true)
+        }
+    }
+
+    const handleLoginSuccess = () => {
+        setShowLogin(false)
+        navigate('/admin-panel')
+    }
+
     return (
         <>
             <header className="header bg-primary-reverse flex align-items-center justify-content-center">
@@ -72,6 +93,19 @@ function Header() {
                                     onClose={close}
                                 />
                             )}
+                            <a href="#" onClick={e => {
+                                e.preventDefault()
+                                handleAdminClick()
+                            }}>
+                                Admin panel
+                            </a>
+
+                            {showLogin && (
+                                <LoginModal
+                                    onClose={() => setShowLogin(false)}
+                                    onSuccess={handleLoginSuccess}
+                                />
+                            )}
                             <LangSwitcher />
                         </div>
 
@@ -86,6 +120,19 @@ function Header() {
                                     isMobile={false}
                                     onToggle={toggle}
                                     onClose={close}
+                                />
+                            )}
+                            <a href="#" onClick={e => {
+                                e.preventDefault()
+                                handleAdminClick()
+                            }}>
+                                Admin panel
+                            </a>
+
+                            {showLogin && (
+                                <LoginModal
+                                    onClose={() => setShowLogin(false)}
+                                    onSuccess={handleLoginSuccess}
                                 />
                             )}
                             <LangSwitcher />
