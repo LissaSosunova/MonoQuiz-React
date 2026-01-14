@@ -15,6 +15,7 @@ xl:	larger screens e.g monitors
 @import 'styles/forms//base.css';
 @import 'styles/navbar/custom.css';
 @import 'styles/popup/base-popup.css';
+@import 'styles/elements/base.css';
 
 
 body {
