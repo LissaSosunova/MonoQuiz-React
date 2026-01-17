@@ -50,6 +50,8 @@ function Header() {
     const [showLogin, setShowLogin] = useState(false)
     const navigate = useNavigate()
 
+    const isToken = !!localStorage.getItem('token');
+
     const handleAdminClick = () => {
         const token = localStorage.getItem('token')
 
@@ -85,7 +87,7 @@ function Header() {
                                 id="closeBtn" onClick={toggleDropdownMenu}>&times;</div>
                             <a href="/">Home</a>
                             <a href="/tests?page=1&from=10&itemsPerPage=10">Tests</a>
-                            {isMobile && (
+                            {(isMobile && isToken) && (
                                 <UserInfo
                                     isOpened={mobileOpen}
                                     isMobile={true}
@@ -114,7 +116,7 @@ function Header() {
                             <a href="/">Home</a>
                             <a href="/tests?page=1&from=10&itemsPerPage=10">Tests</a>
                             {/* Desktop */}
-                            {!isMobile && (
+                            {(!isMobile && isToken) && (
                                 <UserInfo
                                     isOpened={desktopOpen}
                                     isMobile={false}
@@ -126,7 +128,8 @@ function Header() {
                                 e.preventDefault()
                                 handleAdminClick()
                             }}>
-                                Admin panel
+                                {isToken ?
+                                    'Admin pannel' : 'Login'}
                             </a>
 
                             {showLogin && (

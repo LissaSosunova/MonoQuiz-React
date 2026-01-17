@@ -5,3 +5,9 @@ export const UsersAPI = {
     return http.get("/users");
   },
 };
+
+export const UserAPI = {
+  getUser() {
+    return http.get("/users/user");
+  },
+};
