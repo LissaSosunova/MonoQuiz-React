@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { type UserPropsDropDown} from '../shared/interfaces/user-props-drop-down'
-
+import {type User} from '../shared/interfaces/User'
 
 function UserInfo({ isOpened, isMobile, onToggle, onClose }: UserPropsDropDown) {
     const [request] = useState({
