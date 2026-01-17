@@ -2,6 +2,8 @@ import Spinner from './spinner'
 import { type ModalProps } from '../shared/interfaces/modal-props'
 import { useForm } from 'react-hook-form'
 import { type LoginForm } from '../shared/interfaces/login-form'
+import { AuthAPI } from '../api/auth.api'
+
 
 export default function LoginModal({ onClose, onSuccess }: ModalProps) {
 
@@ -18,17 +20,25 @@ export default function LoginModal({ onClose, onSuccess }: ModalProps) {
     })
 
     const onSubmit = async (data: LoginForm) => {
-        // имитация API
-        await new Promise(r => setTimeout(r, 500))
+        try {
+            const response = await AuthAPI.login({
+                email: data.login,
+                password: data.password,
+            })
 
-        if (data.login === 'admin' && data.password === 'admin') {
-            localStorage.setItem('token', 'fake-jwt')
-            localStorage.setItem('role', 'admin')
+            const { token, user } = response.data
+
+            localStorage.setItem('token', token)
+            localStorage.setItem('role', user.role)
+
             onSuccess()
-        } else {
-            throw new Error('Invalid credentials')
+        } catch (error: any) {
+            throw new Error(
+                error?.response?.data?.message || 'Invalid credentials'
+            )
         }
     }
+
 
     return (
         <div className="modal-backdrop">
@@ -70,8 +80,8 @@ export default function LoginModal({ onClose, onSuccess }: ModalProps) {
 
                     <div className="actions">
                         <button type="submit" className="btn-main primary-btn mt-3" disabled={isSubmitting}>
-                            {isSubmitting ? 
-                            <Spinner /> : 'Login'}
+                            {isSubmitting ?
+                                <Spinner /> : 'Login'}
                         </button>
                         <button type="button" onClick={onClose} className="btn-main filter-btn mt-3">
                             Cancel
