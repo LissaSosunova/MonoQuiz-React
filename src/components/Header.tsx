@@ -3,6 +3,7 @@ import LangSwitcher from './LangSwitcher'
 import UserInfo from './UserInfo'
 import { useNavigate } from 'react-router-dom'
 import LoginModal from './LoginModal'
+import { useAuth } from '../shared/AuthContext/AuthContext'
 
 function useMediaQuery(query: string) {
     return window.matchMedia(query).matches;
@@ -10,12 +11,9 @@ function useMediaQuery(query: string) {
 
 function Header() {
     const isMobile = useMediaQuery('(max-width: 768px)');
-
+    const { user, loading } = useAuth();
     const [desktopOpen, setDesktopOpen] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
-
-    const isOpened = isMobile ? mobileOpen : desktopOpen;
-
     const toggle = () => {
         isMobile
             ? setMobileOpen(p => !p)
@@ -67,6 +65,8 @@ function Header() {
         navigate('/admin-panel')
     }
 
+    if (loading) return null;
+
     return (
         <>
             <header className="header bg-primary-reverse flex align-items-center justify-content-center">
@@ -95,11 +95,14 @@ function Header() {
                                     onClose={close}
                                 />
                             )}
-                            <a href="#" onClick={e => {
-                                e.preventDefault()
-                                handleAdminClick()
-                            }}>
-                                Admin panel
+                            <a
+                                href="#"
+                                onClick={e => {
+                                    e.preventDefault()
+                                    handleAdminClick()
+                                }}
+                            >
+                                {user?.role === 'admin' ? 'Admin panel' : 'Login'}
                             </a>
 
                             {showLogin && (
@@ -124,12 +127,14 @@ function Header() {
                                     onClose={close}
                                 />
                             )}
-                            <a href="#" onClick={e => {
-                                e.preventDefault()
-                                handleAdminClick()
-                            }}>
-                                {isToken ?
-                                    'Admin pannel' : 'Login'}
+                            <a
+                                href="#"
+                                onClick={e => {
+                                    e.preventDefault()
+                                    handleAdminClick()
+                                }}
+                            >
+                                {user?.role === 'admin' ? 'Admin panel' : 'Login'}
                             </a>
 
                             {showLogin && (
