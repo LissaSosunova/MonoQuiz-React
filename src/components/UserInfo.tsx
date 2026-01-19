@@ -1,38 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { type UserPropsDropDown } from '../shared/interfaces/user-props-drop-down'
-import { type User } from '../shared/interfaces/User'
-import { UserAPI } from '../api/users.api'
+import { useAuth } from '../shared/AuthContext/AuthContext'
 
 function UserInfo({ isOpened, isMobile, onToggle, onClose }: UserPropsDropDown) {
-    const [request] = useState({
-        session: {
-            customer_name: "Name",
-            customer_email: "example@gmail.com"
-        }
-    });
-    const [user, setUser] = useState<User>();
-    const [error, setError] = useState<string | null>(null)
-    const [loading, setLoading] = useState(true)
-    useEffect(() => {
-        if (localStorage.getItem('token')) {
-            const loadUser = async () => {
-                try {
-                    const res = await UserAPI.getUser()
-                    setUser(res.data)
-                } catch (err: any) {
-                    setError(
-                        err?.response?.data?.message ||
-                        'Failed to load user'
-                    )
-                    console.log('error: ',error)
-                } finally {
-                    setLoading(false)
-                }
-            }
 
-            loadUser()
-        }
-    }, [])
+    const { user } = useAuth()
+
+
     const dropdownRef = useRef<HTMLDivElement | null>(null);
 
     const logOut = () => {
@@ -78,9 +52,7 @@ function UserInfo({ isOpened, isMobile, onToggle, onClose }: UserPropsDropDown) 
             )}
             {!isMobile && (
                 <div
-                    ref={dropdownRef}
-                    className={`user-info ${isOpened ? 'open' : ''}`}
-                >
+                    className={`user-info ${isOpened ? 'open' : ''}`}>
                     Name: {user?.name} Email: {user?.email}
                 </div>
             )}

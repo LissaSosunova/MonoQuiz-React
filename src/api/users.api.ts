@@ -1,13 +1,11 @@
 import { http } from "./http";
+import { type User } from '../shared/interfaces/User';
 
 export const UsersAPI = {
   getAll() {
-    return http.get("/users");
+    return http.get<User[]>("/users");
   },
-};
-
-export const UserAPI = {
   getUser() {
-    return http.get("/users/user");
+    return http.get<User>("/users/user");
   },
 };
