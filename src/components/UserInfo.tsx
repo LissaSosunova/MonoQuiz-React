@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { type UserPropsDropDown } from '../shared/interfaces/user-props-drop-down'
 import { useAuth } from '../shared/AuthContext/AuthContext'
 
