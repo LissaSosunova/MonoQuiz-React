@@ -1,28 +1,38 @@
 import Spinner from './spinner'
 import { type ModalProps } from '../shared/interfaces/modal-props'
 import { useForm } from 'react-hook-form'
-import { type LoginForm } from '../shared/interfaces/login-form'
+import { type LoginFormData, type RegisterFormData } from '../shared/interfaces/login-form'
 import { AuthAPI } from '../api/auth.api'
+import { useState } from 'react'
 
+type RegisterFormWithRoot = RegisterFormData & {
+    root?: {
+        message?: string
+    }
+}
 
 export default function LoginModal({ onClose, onSuccess }: ModalProps) {
+    const [tab, setTab] = useState<'login' | 'register'>('login')
 
     const {
-        register,
-        handleSubmit,
-        formState: { errors, isSubmitting },
-    } = useForm<LoginForm>({
-        defaultValues: {
-            login: '',
-            password: '',
-        },
-        mode: 'onSubmit', // аналог updateOn: 'submit'
-    })
+        register: loginRegister,
+        handleSubmit: handleLoginSubmit,
+        formState: { errors: loginErrors, isSubmitting },
+    } = useForm<LoginFormData>()
 
-    const onSubmit = async (data: LoginForm) => {
+    const {
+        register: registerRegister,
+        handleSubmit: handleRegisterSubmit,
+        watch,
+        setError,
+        clearErrors,
+        formState: { errors: registerErrors, isSubmitting: isSubmittingRegister },
+    } = useForm<RegisterFormWithRoot>()
+
+    const onLoginSubmit = async (data: LoginFormData) => {
         try {
             const response = await AuthAPI.login({
-                email: data.login,
+                email: data.email,
                 password: data.password,
             })
 
@@ -39,55 +49,171 @@ export default function LoginModal({ onClose, onSuccess }: ModalProps) {
         }
     }
 
+    const onRegisterSubmit = async (data: RegisterFormData) => {
+        try {
+            const response = await AuthAPI.register({
+                name: data.name,
+                email: data.email,
+                password: data.password,
+                role: 'USER',
+            })
+
+            const { token, user } = response.data
+
+            localStorage.setItem('token', token)
+            localStorage.setItem('role', user.role)
+
+            onSuccess()
+        } catch (error: any) {
+            setError('root.server', {
+                type: 'server',
+                message:
+                    error?.response?.data?.message ||
+                    'Пользователь уже существует',
+            })
+        }
+    }
+
 
     return (
         <div className="modal-backdrop">
             <div className="modal">
-                <h2>Admin login</h2>
+                {/* Login */}
+                {tab === 'login' && (
+                    <>
+                        <h2>Login / 
+                            <button
+                                type="button"
+                                className="btn-tab primary-btn mt-3 ml-3"
+                                onClick={() => setTab('register')}
+                            >
+                                Registration
+                            </button>
+                        </h2>
+                        <form onSubmit={handleLoginSubmit(onLoginSubmit)}>
+                            <div className="grid md:justify-content-center p-0-20">
+                                <div className="col-12 ">
+                                    <div className="mb-3 input-set max-w-18rem md:min-w-full col">
 
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="grid md:justify-content-center p-0-20">
-                        <div className="col-12 ">
-                            <div className="mb-3 input-set max-w-18rem md:min-w-full col">
+                                        <label className="form-label form-label1">Email</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            {...loginRegister('email', { required: 'Email is required' })}
+                                        />
+                                        {loginErrors.email && <p className="error error-form">{loginErrors.email.message}</p>}
+                                    </div>
+                                    <div className="mb-3 input-set max-w-18rem md:min-w-full col">
 
-                                <label className="form-label form-label1">Login</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    {...register('login', {
-                                        required: 'Login is required',
-                                        minLength: { value: 3, message: 'Min 3 characters' },
-                                    })}
-                                />
-                                {errors.login && <p>{errors.login.message}</p>}
+                                        <label
+                                            className="form-label form-label1">Password</label>
+                                        <input
+                                            type="password"
+                                            className="form-control"
+                                            {...loginRegister('password', { required: 'Password is required' })}
+                                        />
+                                        {loginErrors.password && <p className="error error-form" >{loginErrors.password.message}</p>}
+                                    </div>
+                                </div>
                             </div>
-                            <div className="mb-3 input-set max-w-18rem md:min-w-full col">
 
-                                <label
-                                    className="form-label form-label1">Password</label>
-                                <input
-                                    type="password"
-                                    className="form-control"
-                                    {...register('password', {
-                                        required: 'Password is required',
-                                        minLength: { value: 6, message: 'Min 6 characters' },
-                                    })}
-                                />
-                                {errors.password && <p className="error" >{errors.password.message}</p>}
+                            <div className="actions">
+                                <button type="submit" className="btn-main primary-btn mt-3" disabled={isSubmitting}>
+                                    {isSubmitting ?
+                                        <Spinner /> : 'Login'}
+                                </button>
+                                <button type="button" onClick={onClose} className="btn-main filter-btn mt-3">
+                                    Cancel
+                                </button>
                             </div>
-                        </div>
-                    </div>
+                        </form>
+                    </>
+                )}
+                {/* Registration */}
+                {tab === 'register' && (
+                    <>
+                        <h2>Registrtion / <button
+                            type="button"
+                            className="btn-tab primary-btn mt-3 ml-3"
+                            onClick={() => { clearErrors(); setTab('login') }}
+                        >
+                            Login
+                        </button></h2>
 
-                    <div className="actions">
-                        <button type="submit" className="btn-main primary-btn mt-3" disabled={isSubmitting}>
-                            {isSubmitting ?
-                                <Spinner /> : 'Login'}
-                        </button>
-                        <button type="button" onClick={onClose} className="btn-main filter-btn mt-3">
-                            Cancel
-                        </button>
-                    </div>
-                </form>
+                        <form onSubmit={handleRegisterSubmit(onRegisterSubmit)}>
+                            <div className="grid md:justify-content-center p-0-20">
+                                <div className="col-12 ">
+                                    <div className="mb-3 input-set max-w-18rem md:min-w-full col">
+                                        <label className="form-label form-label1">Name</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder=''
+                                            {...registerRegister('name', {
+                                                required: 'Name is required',
+                                                minLength: { value: 3, message: 'Минимум 6 символов' }
+                                            })}
+                                        />
+                                        {registerErrors.name && <p className="error error-form">{registerErrors.name.message}</p>}
+                                    </div>
+                                    <div className="mb-3 input-set max-w-18rem md:min-w-full col">
+                                        <label className="form-label form-label1">Email</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder=''
+                                            {...registerRegister('email', { required: 'Email is required' })}
+                                        />
+                                        {registerErrors.email && <p className="error error-form">{registerErrors.email.message}</p>}
+                                    </div>
+                                    <div className="mb-3 input-set max-w-18rem md:min-w-full col">
+
+                                        <label
+                                            className="form-label form-label1">Password</label>
+                                        <input
+                                            type="password"
+                                            className="form-control"
+                                            {...registerRegister('password', {
+                                                required: 'Пароль обязателен',
+                                                minLength: { value: 6, message: 'Минимум 6 символов' },
+                                            })}
+                                        />
+                                        {registerErrors.password && <p className="error error-form" >{registerErrors.password.message}</p>}
+                                    </div>
+                                    <div className="mb-3 input-set max-w-18rem md:min-w-full col">
+
+                                        <label
+                                            className="form-label form-label1">Confirm Password</label>
+                                        <input
+                                            type="password"
+                                            className="form-control"
+                                            {...registerRegister('confirmPassword', {
+                                                validate: value =>
+                                                    value === watch('password') || 'Пароли не совпадают',
+                                            })}
+                                        />
+                                        {registerErrors.confirmPassword && <p className="error error-form" >{registerErrors.confirmPassword.message}</p>}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="actions">
+                                <button type="submit" className="btn-main primary-btn mt-3" disabled={isSubmittingRegister}>
+                                    {isSubmittingRegister ?
+                                        <Spinner /> : 'Register'}
+                                </button>
+                                <button type="button" onClick={onClose} className="btn-main filter-btn mt-3">
+                                    Cancel
+                                </button>
+                            </div>
+                            {registerErrors.root?.server?.message && (
+                                <p className="error error-form">
+                                    {registerErrors.root.server.message}
+                                </p>
+                            )}
+
+                        </form>
+                    </>
+                )}
             </div>
         </div>
     )

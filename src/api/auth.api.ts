@@ -4,9 +4,10 @@ export const AuthAPI = {
   register(data: {
     email: string;
     password: string;
+    name: string;
     role: "USER" | "ADMIN";
   }) {
-    return http.post("/auth/register", data);
+    return http.post("/users/register", data);
   },
 
   login(data: { email: string; password: string }) {

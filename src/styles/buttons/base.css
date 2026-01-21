@@ -93,6 +93,20 @@ button {
     text-decoration: none;
 }
 
+.btn-tab {
+    padding: 5px 11px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    align-items: center;
+    display: inline-block;
+    border-radius: 14px;
+    border: 1px solid transparent;
+    text-decoration: none;
+    gap: 5px;
+    flex-wrap: nowrap;
+}
+
 .primary-btn {
     color: var(--primary-color);
     background-color: var(--primary-color-text);

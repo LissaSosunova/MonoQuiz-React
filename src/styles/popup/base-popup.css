@@ -27,3 +27,7 @@
 .error {
   color: red;
 }
+.error-form {
+    margin: 2px;
+    font-size: 12px;
+}

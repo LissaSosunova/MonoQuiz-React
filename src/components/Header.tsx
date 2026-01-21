@@ -62,7 +62,7 @@ function Header() {
 
     const handleLoginSuccess = () => {
         setShowLogin(false)
-        navigate('/admin-panel')
+        navigate('/')
     }
 
     if (loading) return null;
@@ -134,7 +134,12 @@ function Header() {
                                     handleAdminClick()
                                 }}
                             >
-                                {user?.role === 'admin' ? 'Admin panel' : 'Login'}
+                                {user?.role === 'admin' ? (
+                                    'Admin panel'
+                                ) : !user ? (
+                                    'Login'
+                                )
+                                 : ''}
                             </a>
 
                             {showLogin && (
