@@ -2,7 +2,7 @@ select {
   width: 100%;
   min-height: 33px;
   border-radius: 8px;
-  border: 0px;
+  border: 1px solid black;
   padding: 2px 5px 2px 8px;
   margin: 4px 0px;
 
