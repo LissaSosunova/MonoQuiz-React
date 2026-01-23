@@ -123,6 +123,7 @@
         grid-template-columns: 1fr !important;
     }
 }
+
 /* Cards for main page */
 .test-cards-wrapper {
     position: relative;
@@ -379,10 +380,12 @@
     display: block;
     min-width: 110px;
 }
+
 .mobile-lang .lang-select-options.open {
     display: block;
     min-width: 110px;
 }
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -405,4 +408,37 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.admin-table {
+    border-collapse: collapse;
+}
+
+.admin-table thead {
+    background: var(--primary-color-text);
+    color: var(--primary-color);
+    border-collapse: collapse;
+}
+
+.admin-table td {
+    border: 1px solid black;
+    text-align: left;
+    padding: 4px 8px;
+}
+
+.admin-table td:last-child,
+.admin-table thead tr th:last-child {
+    max-width: 70px;
+    width: 70px;
+    text-align: center;
+}
+
+.admin-table thead tr th {
+    padding: 8px;
+}
+
+.admin-table .checkbox-label {
+    max-width: 22px;
+    width: 22px;
+    margin: auto;
 }
