@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form'
 import { type LoginFormData, type RegisterFormData } from '../shared/interfaces/login-form'
 import { AuthAPI } from '../api/auth.api'
 import { useState } from 'react'
+import { useAuth } from '../shared/AuthContext/AuthContext'
+import { showToast } from '../shared/ui/toast'
 
 type RegisterFormWithRoot = RegisterFormData & {
     root?: {
@@ -17,8 +19,17 @@ export default function LoginModal({ onClose, onSuccess }: ModalProps) {
     const {
         register: loginRegister,
         handleSubmit: handleLoginSubmit,
+        setError: setLoginError,
+        clearErrors: clearLoginErrors,
         formState: { errors: loginErrors, isSubmitting },
-    } = useForm<LoginFormData>()
+    } = useForm<LoginFormData & {
+        root?: {
+            server?: {
+                message?: string
+            }
+        }
+    }>()
+
 
     const {
         register: registerRegister,
@@ -29,24 +40,22 @@ export default function LoginModal({ onClose, onSuccess }: ModalProps) {
         formState: { errors: registerErrors, isSubmitting: isSubmittingRegister },
     } = useForm<RegisterFormWithRoot>()
 
+    const { login } = useAuth()
     const onLoginSubmit = async (data: LoginFormData) => {
         try {
-            const response = await AuthAPI.login({
-                email: data.email,
-                password: data.password,
-            })
-
-            const { token, user } = response.data
-
-            localStorage.setItem('token', token)
-            localStorage.setItem('role', user.role)
-
+            const response = await AuthAPI.login(data)
+            login(response.data.token, response.data.user)
             onSuccess()
         } catch (error: any) {
-            throw new Error(
-                error?.response?.data?.message || 'Invalid credentials'
-            )
+            setLoginError('root.server', {
+                message:
+                    error?.response?.data?.message ||
+                    'Invalid credentials',
+            })
+            showToast.error(error?.response?.data?.message ||
+                'Invalid credentials')
         }
+
     }
 
     const onRegisterSubmit = async (data: RegisterFormData) => {
@@ -58,10 +67,7 @@ export default function LoginModal({ onClose, onSuccess }: ModalProps) {
                 role: 'USER',
             })
 
-            const { token, user } = response.data
-
-            localStorage.setItem('token', token)
-            localStorage.setItem('role', user.role)
+            login(response.data.token, response.data.user)
 
             onSuccess()
         } catch (error: any) {
@@ -71,9 +77,10 @@ export default function LoginModal({ onClose, onSuccess }: ModalProps) {
                     error?.response?.data?.message ||
                     'Пользователь уже существует',
             })
+            showToast.error(error?.response?.data?.message ||
+                'Пользователь уже существует')
         }
     }
-
 
     return (
         <div className="modal-backdrop">
@@ -81,7 +88,7 @@ export default function LoginModal({ onClose, onSuccess }: ModalProps) {
                 {/* Login */}
                 {tab === 'login' && (
                     <>
-                        <h2>Login / 
+                        <h2>Login /
                             <button
                                 type="button"
                                 className="btn-tab primary-btn mt-3 ml-3"
@@ -126,6 +133,11 @@ export default function LoginModal({ onClose, onSuccess }: ModalProps) {
                                     Cancel
                                 </button>
                             </div>
+                            {loginErrors.root?.server?.message && (
+                                <p className="error error-form">
+                                    {loginErrors.root.server.message}
+                                </p>
+                            )}
                         </form>
                     </>
                 )}
