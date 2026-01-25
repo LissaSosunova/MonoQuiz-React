@@ -4,6 +4,7 @@ import UserInfo from './UserInfo'
 import { useNavigate } from 'react-router-dom'
 import LoginModal from './LoginModal'
 import { useAuth } from '../shared/AuthContext/AuthContext'
+import { useTranslation } from 'react-i18next'
 
 function useMediaQuery(query: string) {
     return window.matchMedia(query).matches;
@@ -11,6 +12,7 @@ function useMediaQuery(query: string) {
 
 function Header() {
     const isMobile = useMediaQuery('(max-width: 768px)');
+    const { t } = useTranslation();
     const { user, loading } = useAuth();
     const [desktopOpen, setDesktopOpen] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -85,8 +87,8 @@ function Header() {
                             ref={dropdownRef}>
                             <div className="close-btn"
                                 id="closeBtn" onClick={toggleDropdownMenu}>&times;</div>
-                            <a href="/">Home</a>
-                            <a href="/tests?page=1&from=10&itemsPerPage=10">Tests</a>
+                            <a href="/">{t('MENU.Home')}</a>
+                            <a href="/tests?page=1&from=10&itemsPerPage=10">{t('MENU.Tests')}</a>
                             {(isMobile && isToken) && (
                                 <UserInfo
                                     isOpened={mobileOpen}
@@ -102,7 +104,7 @@ function Header() {
                                     handleAdminClick()
                                 }}
                             >
-                                {user?.role === 'admin' ? 'Admin panel' : 'Login'}
+                                {user?.role === 'admin' ? t('MENU.Admin_panel') : !user ? (t('MENU.Login')) : ''}
                             </a>
 
                             {showLogin && (
@@ -116,8 +118,8 @@ function Header() {
 
                         {/* Desktop */}
                         <div className="menu-opened desktop-lang">
-                            <a href="/">Home</a>
-                            <a href="/tests?page=1&from=10&itemsPerPage=10">Tests</a>
+                            <a href="/">{t('MENU.Home')}</a>
+                            <a href="/tests?page=1&from=10&itemsPerPage=10">{t('MENU.Tests')}</a>
                             {/* Desktop */}
                             {(!isMobile && isToken) && (
                                 <UserInfo
@@ -134,12 +136,7 @@ function Header() {
                                     handleAdminClick()
                                 }}
                             >
-                                {user?.role === 'admin' ? (
-                                    'Admin panel'
-                                ) : !user ? (
-                                    'Login'
-                                )
-                                 : ''}
+                                {user?.role === 'admin' ? t('MENU.Admin_panel') : !user ? (t('MENU.Login')) : ''}
                             </a>
 
                             {showLogin && (

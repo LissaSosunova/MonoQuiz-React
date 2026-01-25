@@ -1,0 +1,38 @@
+{
+  "title": "Welcome",
+  "description": "This is the home page",
+  "login": {
+    "button": "Log in"
+  },
+  "MENU": {
+    "Home": "Home",
+    "Tests": "Tests",
+    "Admin_panel": "Admin panel",
+    "Login": "Login"
+  },
+  "USER": {
+    "name": "Name",
+    "email": "Email"
+  },
+  "HOME": {
+    "header": "Start exploring yourself today",
+    "description1": "Pick a test and unlock insights into your personality, intellect, habits, or emotional patterns.",
+    "description2": "Instant results. Expert-designed. Affordable",
+    "buttons": {
+        "BrowsAllTests": "Brows all tests"
+    }
+  },
+  "FOOTER": {
+    "about": "About Mono quiz",
+    "aboutText": "Our platform offers expert-designed tests to help you discover your true potential.",
+    "links": "Quick Links",
+    "Home": "Home",
+    "Categories": "Categories",
+    "Tests": "Tests",
+    "Support": "Support",
+    "TermsOfUse": "Terms of Use",
+    "Privacy Policy": "Privacy Policy",
+    "ContactUs": "Contact Us",
+    "rights": "© Mono quiz. All rights reserved."
+  }
+}
