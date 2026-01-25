@@ -12,6 +12,6 @@ export const UsersAPI = {
     return http.patch<User>(`/users/changerole/${id}/role`, {role});
   },
   updateActive(id: string, isActive: boolean) {
-    return http.patch<User>(`/users/changevisibility/${id}/isActive`, { isActive});
+    return http.patch<User>(`/users/changevisibility/`, { isActive: isActive, id: id});
   }
 };

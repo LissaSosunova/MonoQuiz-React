@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react'
 import { type UserPropsDropDown } from '../shared/interfaces/user-props-drop-down'
 import { useAuth } from '../shared/AuthContext/AuthContext'
+import { useTranslation } from 'react-i18next'
 
 function UserInfo({ isOpened, isMobile, onToggle, onClose }: UserPropsDropDown) {
-
+    const { t } = useTranslation();
     const { user, loading, logout } = useAuth()
     const dropdownRef = useRef<HTMLDivElement | null>(null);
 
@@ -39,20 +40,20 @@ function UserInfo({ isOpened, isMobile, onToggle, onClose }: UserPropsDropDown) 
                     ref={dropdownRef}
                     className={`user-info open-position-unset`}
                 >
-                    Name: {user?.name} Email: {user?.email}
+                    {t('USER.name')}: {user?.name} {t('USER.email')}: {user?.email}
                 </div>
             )}
             {!isMobile && (
                 <div
                     className={`user-info ${isOpened ? 'open' : ''}`}>
-                    Name: {user?.name} Email: {user?.email}
+                    {t('USER.name')}:&nbsp;{user?.name} {t('USER.email')}:&nbsp;{user?.email}
                 </div>
             )}
             <div
                 ref={dropdownRef}
                 className={`user-info ${isOpened ? 'open' : ''}`}
             >
-                Name: {user?.name} Email: {user?.email}
+                {t('USER.name')}:&nbsp;{user?.name} {t('USER.email')}:&nbsp;{user?.email}
             </div>
 
             <div className="user-logout" onClick={logout}>
