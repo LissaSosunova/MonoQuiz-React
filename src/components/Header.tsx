@@ -64,7 +64,7 @@ function Header() {
 
     const handleLoginSuccess = () => {
         setShowLogin(false)
-        navigate('/')
+        // navigate('/')
     }
 
     if (loading) return null;

@@ -5,7 +5,7 @@ export const AuthAPI = {
     email: string;
     password: string;
     name: string;
-    role: "USER" | "ADMIN";
+    role: "USER" | "ADMIN" | "user" | "admin";
   }) {
     return http.post("/users/register", data);
   },
