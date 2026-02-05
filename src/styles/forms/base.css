@@ -161,3 +161,9 @@ input[type='radio'] {
   appearance: none;
   outline: none;
 }
+
+.required::after {
+        content: "*";
+        margin-left: 2px;
+        color: red;
+    }

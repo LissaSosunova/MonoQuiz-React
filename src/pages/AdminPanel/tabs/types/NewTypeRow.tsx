@@ -43,36 +43,45 @@ export function NewTypeRow({ onSave, onCancel }: Props) {
 
     return (
         <tr>
-            <td>
+            <td><div className="mb-3 input-set max-w-18rem md:min-w-full col">
+                <label className="form-label form-label1 required">Slug</label>
                 <input
+                    type="text"
                     value={data.slug}
-                    placeholder="slug"
                     onChange={e =>
                         setData({ ...data, slug: e.target.value })
                     }
                 />
+            </div>
+
             </td>
 
             {(['uk', 'en', 'ru'] as const).map(lang => (
                 <td key={lang}>
-                    <input
-                        placeholder="Title *"
-                        value={data.translations[lang].title}
-                        onChange={e =>
-                            updateTranslation(lang, 'title', e.target.value)
-                        }
-                    />
-                    <input
-                        placeholder="Description"
-                        value={data.translations[lang].description}
-                        onChange={e =>
-                            updateTranslation(
-                                lang,
-                                'description',
-                                e.target.value
-                            )
-                        }
-                    />
+                    <div className="mb-3 input-set max-w-18rem md:min-w-full col">
+                        <label className="form-label form-label1 required">Title</label>
+                        <input
+                            type="text"
+                            value={data.translations[lang].title}
+                            onChange={e =>
+                                updateTranslation(lang, 'title', e.target.value)
+                            }
+                        />
+                    </div>
+                    <div className="mb-3 input-set max-w-18rem md:min-w-full col">
+                        <label className="form-label form-label1">Description</label>
+                        <input
+                            type="text"
+                            value={data.translations[lang].description}
+                            onChange={e =>
+                                updateTranslation(
+                                    lang,
+                                    'description',
+                                    e.target.value
+                                )
+                            }
+                        />
+                    </div>
                 </td>
             ))}
 

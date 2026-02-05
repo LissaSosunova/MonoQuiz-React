@@ -53,26 +53,30 @@ export function TypeRow({ type, onSave, isSaving }: Props) {
 
       {(['uk', 'en', 'ru'] as const).map(lang => (
         <td key={lang}>
-          <input
-            type="text"
-            value={local.translations[lang].title}
-            placeholder="Title"
-            onChange={e =>
-              updateTranslation(lang, 'title', e.target.value)
-            }
-          />
-          <input
-            type="text"
-            value={local.translations[lang].description}
-            placeholder="Description"
-            onChange={e =>
-              updateTranslation(
-                lang,
-                'description',
-                e.target.value
-              )
-            }
-          />
+          <div className="mb-3 input-set max-w-18rem md:min-w-full col">
+            <label className="form-label form-label1">Title</label>
+            <input
+              type="text"
+              value={local.translations[lang].title}
+              onChange={e =>
+                updateTranslation(lang, 'title', e.target.value)
+              }
+            />
+          </div>
+          <div className="mb-3 input-set max-w-18rem md:min-w-full col">
+            <label className="form-label form-label1">Description</label>
+            <input
+              type="text"
+              value={local.translations[lang].description}
+              onChange={e =>
+                updateTranslation(
+                  lang,
+                  'description',
+                  e.target.value
+                )
+              }
+            />
+          </div>
         </td>
       ))}
 

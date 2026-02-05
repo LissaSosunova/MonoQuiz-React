@@ -17,7 +17,10 @@ export default function TypesTab() {
   const handleSaveRow = async (updated: Type) => {
     try {
       setLoadingId(updated._id!)
-      const res = await TypesAPI.edit(updated)
+      const res = await TypesAPI.edit(updated._id!, {
+        slug: updated.slug,
+        translations: updated.translations
+      })
 
       setTypes(prev =>
         prev.map(t => (t._id === updated._id ? res.data : t))
