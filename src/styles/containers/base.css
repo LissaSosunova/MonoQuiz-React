@@ -410,17 +410,17 @@
     justify-content: center;
 }
 
-.admin-table {
+.admin-table, .types-table {
     border-collapse: collapse;
 }
 
-.admin-table thead {
+.admin-table thead, .types-table thead {
     background: var(--primary-color-text);
     color: var(--primary-color);
     border-collapse: collapse;
 }
 
-.admin-table td {
+.admin-table td, .types-table td {
     border: 1px solid black;
     text-align: left;
     padding: 4px 8px;
@@ -433,7 +433,19 @@
     text-align: center;
 }
 
-.admin-table thead tr th {
+.types-table td:last-child,
+.types-table thead tr th:last-child {
+    max-width: 110px;
+    width: 110px;
+    text-align: center;
+}
+.types-table td:first-child,
+.types-table thead tr th:first-child {
+    max-width: 170px;
+    width: 170px;
+    text-align: center;
+}
+.admin-table thead tr th, .types-table thead tr th {
     padding: 8px;
 }
 

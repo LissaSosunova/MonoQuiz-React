@@ -34,5 +34,12 @@
     "PrivacyPolicy": "Privacy Policy",
     "ContactUs": "Contact Us",
     "rights": "© Mono quiz. All rights reserved."
+  },
+  "ADMINPANNEL": {
+    "Adminpanel": "Admin panel",
+    "Users": "Users",
+    "Categories": "Categories",
+    "Types": "Types",
+    "Tests": "Tests"
   }
 }

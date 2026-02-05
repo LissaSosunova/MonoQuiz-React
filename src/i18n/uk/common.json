@@ -34,5 +34,12 @@
     "PrivacyPolicy": "Політика конфіденційності",
     "ContactUs": "Зв'яжіться з нами",
     "rights": "© Mono quiz. Всі права захищено."
+  },
+  "ADMINPANNEL": {
+    "Adminpanel": "Панель адміністратора",
+    "Users": "Користувачи",
+    "Categories": "Категорії",
+    "Types": "Типи",
+    "Tests": "Тести"
   }
 }
