@@ -34,7 +34,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const login = (token: string, user: User) => {
         localStorage.setItem('token', token)
         showToast.success(`Welcome back ${user.name}`)
-        console.log(`Welcome back ${user.name}`)
         setUser(user)
     }
 
