@@ -8,7 +8,7 @@ export const TypesAPI = {
   create(data: Type) {
     return http.post('/types/create', data)
   },
-  edit(data: Type) {
-    return http.patch('/types/edit', data)
+  edit(id: string, data: Type) {
+    return http.patch(`/types/edit/${id}`, data)
   }
 };
