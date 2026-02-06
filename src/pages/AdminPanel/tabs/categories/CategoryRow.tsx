@@ -7,7 +7,7 @@ type Props = {
   isSaving: boolean
 }
 
-export function TypeRow({ type, onSave, isSaving }: Props) {
+export function CategoryRow({ type, onSave, isSaving }: Props) {
   const [local, setLocal] = useState<Type>(type)
   const [isDirty, setIsDirty] = useState(false)
 
@@ -63,14 +63,14 @@ export function TypeRow({ type, onSave, isSaving }: Props) {
 
   return (
     <tr>
-      <td>
+      <td>{type.slug}
         <div className="mb-3 input-set max-w-18rem md:min-w-full col">
           <label className="form-label form-label1">Slug</label>
           <input
             type="text"
             value={local.slug}
             onChange={e =>
-              updateSlug(e.target.value.toLowerCase())
+              updateSlug(e.target.value)
             }
           />
         </div>

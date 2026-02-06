@@ -15,7 +15,7 @@ const emptyType: Type = {
     },
 }
 
-export function NewTypeRow({ onSave, onCancel }: Props) {
+export function NewCategoryRow({ onSave, onCancel }: Props) {
     const [data, setData] = useState<Type>(emptyType)
 
     const updateTranslation = (
