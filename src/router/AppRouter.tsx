@@ -4,7 +4,7 @@ import AuthGuard from '../guards/AuthGuard'
 import AdminGuard from '../guards/AdminGuard'
 import UsersTab from '../pages/AdminPanel/tabs/UsersTab'
 import CategoriesTab from '../pages/AdminPanel/tabs/categories/CategoriesTab'
-import TestsTab from '../pages/AdminPanel/tabs/TestsTab'
+import TestsTab from '../pages/AdminPanel/tabs/tests/TestsTab'
 import TypesTab from '../pages/AdminPanel/tabs/types/TypesTab'
 
 const Home = lazy(() => import('../pages/Home/Home'))

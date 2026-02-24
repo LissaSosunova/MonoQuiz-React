@@ -1,9 +1,10 @@
-import axios from "axios";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
+import { http } from "./http";
 
 export const TestsAPI = {
   getAll() {
-    return axios.get(`${API_URL}/tests`);
+    return http.get(`/tests/all`);
+  },
+  create(data: any) {
+    return http.post('/tests/create', data)
   },
 };
