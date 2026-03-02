@@ -29,6 +29,7 @@ export default function QuestionItem({ control, register, questionIndex, removeQ
           <TextField
             label={`Title (${lang})`}
             fullWidth
+            required
             {...register(`questions.${questionIndex}.translations.${lang}`)}
           />
         </Box>
@@ -42,6 +43,7 @@ export default function QuestionItem({ control, register, questionIndex, removeQ
               key={lang}
               label={`Answer (${lang})`}
               fullWidth
+              required
               sx={{ mb: 1 }}
               {...register(`questions.${questionIndex}.answers.${answerIndex}.translations.${lang}`)}
             />
@@ -50,6 +52,7 @@ export default function QuestionItem({ control, register, questionIndex, removeQ
           <TextField
             label="Score"
             type="number"
+            required
             sx={{ mb: 1 }}
             {...register(`questions.${questionIndex}.answers.${answerIndex}.score`, { valueAsNumber: true })}
           />

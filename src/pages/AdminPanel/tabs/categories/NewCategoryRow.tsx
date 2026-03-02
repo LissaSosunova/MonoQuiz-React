@@ -52,6 +52,7 @@ export function NewCategoryRow({ onSave, onCancel }: Props) {
                     <TextField
                         label={`Slug`}
                         fullWidth
+                        required
                         value={data.slug}
                         onChange={e =>
                             setData({ ...data, slug: e.target.value.toLowerCase() })
@@ -67,6 +68,7 @@ export function NewCategoryRow({ onSave, onCancel }: Props) {
                         <TextField
                             label={`Title`}
                             fullWidth
+                            required
                             value={data.title[lang]}
                             onChange={e =>
                                 updateTranslation(lang, 'title', e.target.value)

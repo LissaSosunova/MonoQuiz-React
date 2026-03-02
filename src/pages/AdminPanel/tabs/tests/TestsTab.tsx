@@ -120,6 +120,7 @@ export default function TestsTab() {
 
                   <TextField
                     label="Name"
+                    required
                     fullWidth
                     sx={{ mb: 2 }}
                     {...register(`name.${lang}`)}
@@ -127,6 +128,7 @@ export default function TestsTab() {
 
                   <TextField
                     label="Description"
+                    required
                     fullWidth
                     multiline
                     rows={3}
@@ -155,6 +157,7 @@ export default function TestsTab() {
             <Grid size={{ xs: 6, md: 4 }}>
               <TextField
                 select
+                required
                 label="Type"
                 fullWidth
                 {...register('type')}
@@ -167,6 +170,7 @@ export default function TestsTab() {
             <Grid size={{ xs: 12, md: 4 }}>
               <TextField
                 label="Category"
+                required
                 fullWidth
                 {...register('category')}
               />
@@ -177,6 +181,7 @@ export default function TestsTab() {
                 label="Price"
                 type="number"
                 fullWidth
+                required
                 {...register('price', { valueAsNumber: true })}
               />
             </Grid>
@@ -200,6 +205,7 @@ export default function TestsTab() {
               <TextField
                 select
                 label="Calculation Type"
+                required
                 fullWidth
                 sx={{ mb: 2 }}
                 {...register('calculationScheme.type')}

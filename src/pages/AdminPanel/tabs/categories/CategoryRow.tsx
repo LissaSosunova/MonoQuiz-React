@@ -66,6 +66,7 @@ export function CategoryRow({ category, onSave, isSaving }: Props) {
         <div className="mb-3 input-set max-w-18rem md:min-w-full col">
           <TextField
             label={`Slug`}
+            required
             fullWidth
             value={local.slug}
             onChange={e =>
@@ -81,6 +82,7 @@ export function CategoryRow({ category, onSave, isSaving }: Props) {
             <TextField
               label={`Title`}
               fullWidth
+              required
               value={local.title[lang]}
               onChange={e =>
                 updateTranslation(lang, 'title', e.target.value)
