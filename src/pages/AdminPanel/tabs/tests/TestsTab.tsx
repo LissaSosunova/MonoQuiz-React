@@ -188,11 +188,11 @@ export default function TestsTab() {
           justifyContent: "space-between",
           alignItems: "stretch",
         }}>
-          <Grid size={{ xs: 12, md: 6 }}>
+          <Grid size={{ xs: 12, md: 6 }} sx={{ p: 3, mb: 4 }}>
             {/* ===================== */}
             {/* CALCULATION SCHEME    */}
             {/* ===================== */}
-            <Paper sx={{ p: 3, mb: 4, height: 160 }} elevation={1}>
+            <Paper sx={{ p: 3, mb: 4, height: '100%' }} elevation={1}>
               <Typography variant="h6" gutterBottom>
                 Calculation Scheme
               </Typography>
@@ -216,12 +216,12 @@ export default function TestsTab() {
             </Paper>
           </Grid>
 
-          <Grid size={{ xs: 12, md: 6 }}>
+          <Grid size={{ xs: 12, md: 6 }} sx={{ p: 3, mb: 4 }}>
             {/* ===================== */}
             {/* IMAGE SELECTOR        */}
             {/* ===================== */}
 
-            <Paper sx={{ p: 3, mb: 4, height: 160 }}>
+            <Paper sx={{ p: 3, mb: 4, height: '100%' }}>
               <Typography variant="h6" gutterBottom>
                 Image
               </Typography>
