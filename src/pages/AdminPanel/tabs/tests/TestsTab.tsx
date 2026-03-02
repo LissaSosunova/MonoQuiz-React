@@ -109,29 +109,34 @@ export default function TestsTab() {
           <Typography variant="h6" gutterBottom>
             Name & Description
           </Typography>
+          <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
 
-          {languages.map((lang: Language) => (
-            <Box key={lang} sx={{ mb: 3 }}>
-              <Typography variant="subtitle1">
-                {lang.toUpperCase()}
-              </Typography>
+            {languages.map((lang: Language) => (
+              <Grid size={4}>
+                <Box key={lang} sx={{ mb: 3 }} >
+                  <Typography variant="subtitle1">
+                    {lang.toUpperCase()}
+                  </Typography>
 
-              <TextField
-                label="Name"
-                fullWidth
-                sx={{ mb: 2 }}
-                {...register(`name.${lang}`)}
-              />
+                  <TextField
+                    label="Name"
+                    fullWidth
+                    sx={{ mb: 2 }}
+                    {...register(`name.${lang}`)}
+                  />
 
-              <TextField
-                label="Description"
-                fullWidth
-                multiline
-                rows={3}
-                {...register(`description.${lang}`)}
-              />
-            </Box>
-          ))}
+                  <TextField
+                    label="Description"
+                    fullWidth
+                    multiline
+                    rows={3}
+                    {...register(`description.${lang}`)}
+                  />
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+
         </Paper>
 
         {/* ===================== */}
@@ -143,7 +148,10 @@ export default function TestsTab() {
             General Settings
           </Typography>
 
-          <Grid container spacing={3}>
+          <Grid container spacing={3} sx={{
+            justifyContent: "space-between",
+            alignItems: "stretch",
+          }}>
             <Grid size={{ xs: 6, md: 4 }}>
               <TextField
                 select
@@ -176,12 +184,15 @@ export default function TestsTab() {
         </Paper>
 
 
-        <Grid container spacing={2}>
+        <Grid container spacing={2} sx={{
+          justifyContent: "space-between",
+          alignItems: "stretch",
+        }}>
           <Grid size={{ xs: 12, md: 6 }}>
             {/* ===================== */}
             {/* CALCULATION SCHEME    */}
             {/* ===================== */}
-            <Paper sx={{ p: 3, mb: 4 }}>
+            <Paper sx={{ p: 3, mb: 4, height: 160 }} elevation={1}>
               <Typography variant="h6" gutterBottom>
                 Calculation Scheme
               </Typography>
@@ -210,7 +221,7 @@ export default function TestsTab() {
             {/* IMAGE SELECTOR        */}
             {/* ===================== */}
 
-            <Paper sx={{ p: 3, mb: 4 }}>
+            <Paper sx={{ p: 3, mb: 4, height: 160 }}>
               <Typography variant="h6" gutterBottom>
                 Image
               </Typography>

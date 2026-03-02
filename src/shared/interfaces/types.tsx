@@ -1,11 +1,10 @@
+import { type Translation } from './translations';
+
 export type Type = {
     _id?: string
     slug: string
-    translations: {
-        en: { title: string; description: string }
-        uk: { title: string; description: string }
-        ru: { title: string; description: string }
-    }
+    title: Translation
+    description: Translation
     createdAt?: string
     updatedAt?: string
 

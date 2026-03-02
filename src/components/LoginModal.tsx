@@ -6,6 +6,7 @@ import { AuthAPI } from '../api/auth.api'
 import { useState } from 'react'
 import { useAuth } from '../shared/AuthContext/AuthContext'
 import { showToast } from '../shared/ui/toast'
+import { TextField } from '@mui/material'
 
 type RegisterFormWithRoot = RegisterFormData & {
     root?: {
@@ -91,7 +92,7 @@ export default function LoginModal({ onClose, onSuccess }: ModalProps) {
                         <h2>Login /
                             <button
                                 type="button"
-                                className="btn-tab primary-btn mt-3 ml-3"
+                                className="btn-tab primary-btn mt-3 ml-1"
                                 onClick={() => setTab('register')}
                             >
                                 Registration
@@ -101,22 +102,17 @@ export default function LoginModal({ onClose, onSuccess }: ModalProps) {
                             <div className="grid md:justify-content-center p-0-20">
                                 <div className="col-12 ">
                                     <div className="mb-3 input-set max-w-18rem md:min-w-full col">
-
-                                        <label className="form-label form-label1">Email</label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
+                                        <TextField
+                                            label={`Email`}
+                                            fullWidth
                                             {...loginRegister('email', { required: 'Email is required' })}
                                         />
                                         {loginErrors.email && <p className="error error-form">{loginErrors.email.message}</p>}
                                     </div>
                                     <div className="mb-3 input-set max-w-18rem md:min-w-full col">
-
-                                        <label
-                                            className="form-label form-label1">Password</label>
-                                        <input
-                                            type="password"
-                                            className="form-control"
+                                        <TextField
+                                            label={`Password`}
+                                            fullWidth
                                             {...loginRegister('password', { required: 'Password is required' })}
                                         />
                                         {loginErrors.password && <p className="error error-form" >{loginErrors.password.message}</p>}
@@ -144,23 +140,22 @@ export default function LoginModal({ onClose, onSuccess }: ModalProps) {
                 {/* Registration */}
                 {tab === 'register' && (
                     <>
-                        <h2>Registrtion / <button
+                        <h2> <button
                             type="button"
-                            className="btn-tab primary-btn mt-3 ml-3"
+                            className="btn-tab primary-btn mt-3"
                             onClick={() => { clearErrors(); setTab('login') }}
                         >
                             Login
-                        </button></h2>
+                        </button>
+                        &nbsp;&nbsp;/ Registrtion</h2>
 
                         <form onSubmit={handleRegisterSubmit(onRegisterSubmit)}>
                             <div className="grid md:justify-content-center p-0-20">
                                 <div className="col-12 ">
                                     <div className="mb-3 input-set max-w-18rem md:min-w-full col">
-                                        <label className="form-label form-label1">Name</label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            placeholder=''
+                                        <TextField
+                                            label={`Name`}
+                                            fullWidth
                                             {...registerRegister('name', {
                                                 required: 'Name is required',
                                                 minLength: { value: 3, message: 'Минимум 6 символов' }
@@ -169,22 +164,17 @@ export default function LoginModal({ onClose, onSuccess }: ModalProps) {
                                         {registerErrors.name && <p className="error error-form">{registerErrors.name.message}</p>}
                                     </div>
                                     <div className="mb-3 input-set max-w-18rem md:min-w-full col">
-                                        <label className="form-label form-label1">Email</label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            placeholder=''
+                                        <TextField
+                                            label={`Email`}
+                                            fullWidth
                                             {...registerRegister('email', { required: 'Email is required' })}
                                         />
                                         {registerErrors.email && <p className="error error-form">{registerErrors.email.message}</p>}
                                     </div>
                                     <div className="mb-3 input-set max-w-18rem md:min-w-full col">
-
-                                        <label
-                                            className="form-label form-label1">Password</label>
-                                        <input
-                                            type="password"
-                                            className="form-control"
+                                        <TextField
+                                            label={`Password`}
+                                            fullWidth
                                             {...registerRegister('password', {
                                                 required: 'Пароль обязателен',
                                                 minLength: { value: 6, message: 'Минимум 6 символов' },
@@ -193,12 +183,9 @@ export default function LoginModal({ onClose, onSuccess }: ModalProps) {
                                         {registerErrors.password && <p className="error error-form" >{registerErrors.password.message}</p>}
                                     </div>
                                     <div className="mb-3 input-set max-w-18rem md:min-w-full col">
-
-                                        <label
-                                            className="form-label form-label1">Confirm Password</label>
-                                        <input
-                                            type="password"
-                                            className="form-control"
+                                        <TextField
+                                            label={`Confirm Password`}
+                                            fullWidth
                                             {...registerRegister('confirmPassword', {
                                                 validate: value =>
                                                     value === watch('password') || 'Пароли не совпадают',

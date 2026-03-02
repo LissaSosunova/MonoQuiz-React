@@ -1,39 +1,38 @@
-import { useEffect, useState } from 'react'
-import { type Type } from '../../../../shared/interfaces/types'
+import { useEffect, useState } from 'react';
+import { type Category } from '../../../../shared/interfaces/categories';
+import { languages, type Language } from '../../../../shared/interfaces/translations';
+import { TextField } from '@mui/material';
 
 type Props = {
-  type: Type
-  onSave: (type: Type) => void
+  category: Category
+  onSave: (type: Category) => void
   isSaving: boolean
 }
 
-export function CategoryRow({ type, onSave, isSaving }: Props) {
-  const [local, setLocal] = useState<Type>(type)
+export function CategoryRow({ category, onSave, isSaving }: Props) {
+  const [local, setLocal] = useState<Category>(category)
   const [isDirty, setIsDirty] = useState(false)
 
   useEffect(() => {
-    setLocal(type)
+    setLocal(category)
     setIsDirty(false)
-  }, [type])
+  }, [category])
 
   const updateTranslation = (
-    lang: 'uk' | 'en' | 'ru',
+    lang: Language,
     field: 'title' | 'description',
     value: string
   ) => {
     setLocal(prev => {
       const updated = {
         ...prev,
-        translations: {
-          ...prev.translations,
-          [lang]: {
-            ...prev.translations[lang],
-            [field]: value,
-          },
-        },
+        [field]: {
+          ...prev[field],
+          [lang]: value
+        }
       }
 
-      setIsDirty(JSON.stringify(updated) !== JSON.stringify(type))
+      setIsDirty(JSON.stringify(updated) !== JSON.stringify(category))
       return updated
     })
   }
@@ -47,13 +46,13 @@ export function CategoryRow({ type, onSave, isSaving }: Props) {
         slug: value,
       }
 
-      setIsDirty(JSON.stringify(updated) !== JSON.stringify(type))
+      setIsDirty(JSON.stringify(updated) !== JSON.stringify(category))
       return updated
     })
   }
 
   const handleCancel = () => {
-    setLocal(type)
+    setLocal(category)
     setIsDirty(false)
   }
 
@@ -63,11 +62,11 @@ export function CategoryRow({ type, onSave, isSaving }: Props) {
 
   return (
     <tr>
-      <td>{type.slug}
+      <td>
         <div className="mb-3 input-set max-w-18rem md:min-w-full col">
-          <label className="form-label form-label1">Slug</label>
-          <input
-            type="text"
+          <TextField
+            label={`Slug`}
+            fullWidth
             value={local.slug}
             onChange={e =>
               updateSlug(e.target.value)
@@ -76,29 +75,25 @@ export function CategoryRow({ type, onSave, isSaving }: Props) {
         </div>
       </td>
 
-      {(['uk', 'en', 'ru'] as const).map(lang => (
+      {languages.map((lang: Language) => (
         <td key={lang}>
           <div className="mb-3 input-set max-w-18rem md:min-w-full col">
-            <label className="form-label form-label1">Title</label>
-            <input
-              type="text"
-              value={local.translations[lang].title}
+            <TextField
+              label={`Title`}
+              fullWidth
+              value={local.title[lang]}
               onChange={e =>
                 updateTranslation(lang, 'title', e.target.value)
               }
             />
           </div>
           <div className="mb-3 input-set max-w-18rem md:min-w-full col">
-            <label className="form-label form-label1">Description</label>
-            <input
-              type="text"
-              value={local.translations[lang].description}
+            <TextField
+              label={`Description`}
+              fullWidth
+              value={local.description[lang]}
               onChange={e =>
-                updateTranslation(
-                  lang,
-                  'description',
-                  e.target.value
-                )
+                updateTranslation(lang, 'description', e.target.value)
               }
             />
           </div>
