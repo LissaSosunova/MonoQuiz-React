@@ -19,7 +19,8 @@ export default function TypesTab() {
       setLoadingId(updated._id!)
       const res = await TypesAPI.edit(updated._id!, {
         slug: updated.slug,
-        translations: updated.translations
+        title: updated.title,
+        description: updated.description
       })
 
       setTypes(prev =>

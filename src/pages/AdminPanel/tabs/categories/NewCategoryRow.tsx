@@ -1,84 +1,85 @@
 import { useState } from 'react'
-import { type Type } from '../../../../shared/interfaces/types'
+import { type Category } from '../../../../shared/interfaces/categories';
+import { languages, type Language } from '../../../../shared/interfaces/translations';
+import { TextField } from '@mui/material';
 
 type Props = {
-    onSave: (type: Type) => void
+    onSave: (category: Category) => void
     onCancel: () => void
 }
 
-const emptyType: Type = {
+const emptyCategory: Category = {
     slug: '',
-    translations: {
-        uk: { title: '', description: '' },
-        en: { title: '', description: '' },
-        ru: { title: '', description: '' },
+    title: {
+        uk: '',
+        en: '',
+        ru: '',
+    },
+    description: {
+        uk: '',
+        en: '',
+        ru: '',
     },
 }
 
 export function NewCategoryRow({ onSave, onCancel }: Props) {
-    const [data, setData] = useState<Type>(emptyType)
+    const [data, setData] = useState<Category>(emptyCategory)
 
     const updateTranslation = (
-        lang: 'uk' | 'en' | 'ru',
+        lang: Language,
         field: 'title' | 'description',
         value: string
     ) => {
         setData(prev => ({
             ...prev,
-            translations: {
-                ...prev.translations,
-                [lang]: {
-                    ...prev.translations[lang],
-                    [field]: value,
-                },
-            },
+            [field]: {
+                ...prev[field],
+                [lang]: value
+            }
         }))
     }
 
     const isValid =
         data.slug.trim().length > 0 &&
-        ['uk', 'en', 'ru'].every(
-            l => data.translations[l as 'uk'].title.trim().length > 0
+        (languages).every(
+            lang => data.title[lang].trim().length > 0
         )
 
     return (
         <tr>
-            <td><div className="mb-3 input-set max-w-18rem md:min-w-full col">
-                <label className="form-label form-label1 required">Slug</label>
-                <input
-                    type="text"
-                    value={data.slug}
-                    onChange={e =>
-                        setData({ ...data, slug: e.target.value.toLowerCase() })
-                    }
-                />
-            </div>
+            <td>
+                <div className="mb-3 input-set max-w-18rem md:min-w-full col">
+                    <TextField
+                        label={`Slug`}
+                        fullWidth
+                        value={data.slug}
+                        onChange={e =>
+                            setData({ ...data, slug: e.target.value.toLowerCase() })
+                        }
+                    />
+                </div>
 
             </td>
 
-            {(['uk', 'en', 'ru'] as const).map(lang => (
+            {(languages).map(lang => (
                 <td key={lang}>
                     <div className="mb-3 input-set max-w-18rem md:min-w-full col">
-                        <label className="form-label form-label1 required">Title</label>
-                        <input
-                            type="text"
-                            value={data.translations[lang].title}
+                        <TextField
+                            label={`Title`}
+                            fullWidth
+                            value={data.title[lang]}
                             onChange={e =>
                                 updateTranslation(lang, 'title', e.target.value)
                             }
                         />
                     </div>
                     <div className="mb-3 input-set max-w-18rem md:min-w-full col">
-                        <label className="form-label form-label1">Description</label>
-                        <input
-                            type="text"
-                            value={data.translations[lang].description}
+                        <TextField
+                            label={`Description`}
+                            fullWidth
+                            value={data.description[lang]}
                             onChange={e =>
-                                updateTranslation(
-                                    lang,
-                                    'description',
-                                    e.target.value
-                                )
+                                updateTranslation(lang, 'description', e.target.value)
                             }
                         />
                     </div>

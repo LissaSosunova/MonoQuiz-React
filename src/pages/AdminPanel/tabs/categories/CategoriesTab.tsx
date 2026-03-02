@@ -19,7 +19,8 @@ export default function TypesTab() {
       setLoadingId(updated._id!)
       const res = await CategoriesAPI.edit(updated._id!, {
         slug: updated.slug,
-        translations: updated.translations
+        title: updated.title,
+        description: updated.description
       })
 
       setTypes(prev =>
@@ -79,12 +80,12 @@ export default function TypesTab() {
               />
             )}
 
-            {types.map(type => (
+            {types.map(category => (
               <CategoryRow
-                key={type._id}
-                type={type}
+                key={category._id}
+                category={category}
                 onSave={handleSaveRow}
-                isSaving={loadingId === type._id}
+                isSaving={loadingId === category._id}
               />
             ))}
           </tbody>

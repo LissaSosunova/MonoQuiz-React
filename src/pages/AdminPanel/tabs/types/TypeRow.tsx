@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
-import { type Type } from '../../../../shared/interfaces/types'
+import { type Type } from '../../../../shared/interfaces/types';
+import { languages, type Language } from '../../../../shared/interfaces/translations';
+import { TextField } from '@mui/material';
 
 type Props = {
   type: Type
@@ -17,20 +19,17 @@ export function TypeRow({ type, onSave, isSaving }: Props) {
   }, [type])
 
   const updateTranslation = (
-    lang: 'uk' | 'en' | 'ru',
+    lang: Language,
     field: 'title' | 'description',
     value: string
   ) => {
     setLocal(prev => {
       const updated = {
         ...prev,
-        translations: {
-          ...prev.translations,
-          [lang]: {
-            ...prev.translations[lang],
-            [field]: value,
-          },
-        },
+      [field]: {
+        ...prev[field],
+        [lang]: value
+      }
       }
 
       setIsDirty(JSON.stringify(updated) !== JSON.stringify(type))
@@ -65,45 +64,41 @@ export function TypeRow({ type, onSave, isSaving }: Props) {
     <tr>
       <td>
         <div className="mb-3 input-set max-w-18rem md:min-w-full col">
-          <label className="form-label form-label1">Slug</label>
-          <input
-            type="text"
+          <TextField
+            label={`Slug`}
+            fullWidth
             value={local.slug}
             onChange={e =>
-              updateSlug(e.target.value.toLowerCase())
+              updateSlug(e.target.value)
             }
           />
         </div>
       </td>
 
-      {(['uk', 'en', 'ru'] as const).map(lang => (
-        <td key={lang}>
-          <div className="mb-3 input-set max-w-18rem md:min-w-full col">
-            <label className="form-label form-label1">Title</label>
-            <input
-              type="text"
-              value={local.translations[lang].title}
-              onChange={e =>
-                updateTranslation(lang, 'title', e.target.value)
-              }
-            />
-          </div>
-          <div className="mb-3 input-set max-w-18rem md:min-w-full col">
-            <label className="form-label form-label1">Description</label>
-            <input
-              type="text"
-              value={local.translations[lang].description}
-              onChange={e =>
-                updateTranslation(
-                  lang,
-                  'description',
-                  e.target.value
-                )
-              }
-            />
-          </div>
-        </td>
-      ))}
+      {languages.map((lang: Language) => (
+              <td key={lang}>
+                <div className="mb-3 input-set max-w-18rem md:min-w-full col">
+                  <TextField
+                    label={`Title`}
+                    fullWidth
+                    value={local.title[lang]}
+                    onChange={e =>
+                      updateTranslation(lang, 'title', e.target.value)
+                    }
+                  />
+                </div>
+                <div className="mb-3 input-set max-w-18rem md:min-w-full col">
+                  <TextField
+                    label={`Description`}
+                    fullWidth
+                    value={local.description[lang]}
+                    onChange={e =>
+                      updateTranslation(lang, 'description', e.target.value)
+                    }
+                  />
+                </div>
+              </td>
+            ))}
 
       <td>
         {isDirty && (
