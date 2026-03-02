@@ -67,6 +67,7 @@ export function TypeRow({ type, onSave, isSaving }: Props) {
           <TextField
             label={`Slug`}
             fullWidth
+            required
             value={local.slug}
             onChange={e =>
               updateSlug(e.target.value)
@@ -81,6 +82,7 @@ export function TypeRow({ type, onSave, isSaving }: Props) {
                   <TextField
                     label={`Title`}
                     fullWidth
+                    required
                     value={local.title[lang]}
                     onChange={e =>
                       updateTranslation(lang, 'title', e.target.value)
