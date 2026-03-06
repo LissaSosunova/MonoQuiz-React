@@ -6,7 +6,13 @@ import { AuthAPI } from '../api/auth.api'
 import { useState } from 'react'
 import { useAuth } from '../shared/AuthContext/AuthContext'
 import { showToast } from '../shared/ui/toast'
-import { TextField } from '@mui/material'
+import { TextField, FormControl } from '@mui/material'
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import InputAdornment from '@mui/material/InputAdornment'
+import IconButton from '@mui/material/IconButton'
+import OutlinedInput from '@mui/material/OutlinedInput'
+import InputLabel from '@mui/material/InputLabel'
 
 type RegisterFormWithRoot = RegisterFormData & {
     root?: {
@@ -15,7 +21,11 @@ type RegisterFormWithRoot = RegisterFormData & {
 }
 
 export default function LoginModal({ onClose, onSuccess }: ModalProps) {
-    const [tab, setTab] = useState<'login' | 'register'>('login')
+    const [tab, setTab] = useState<'login' | 'register'>('login');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show);
 
     const {
         register: loginRegister,
@@ -110,11 +120,26 @@ export default function LoginModal({ onClose, onSuccess }: ModalProps) {
                                         {loginErrors.email && <p className="error error-form">{loginErrors.email.message}</p>}
                                     </div>
                                     <div className="mb-3 input-set max-w-18rem md:min-w-full col">
-                                        <TextField
-                                            label={`Password`}
-                                            fullWidth
-                                            {...loginRegister('password', { required: 'Password is required' })}
-                                        />
+                                        <FormControl fullWidth variant="outlined">
+                                            <InputLabel shrink>Password</InputLabel>
+
+                                            <OutlinedInput
+                                                label="Password"
+                                                type={showPassword ? 'text' : 'password'}
+                                                {...loginRegister('password', { required: 'Password is required' })}
+                                                endAdornment={
+                                                    <InputAdornment position="end">
+                                                        <IconButton
+                                                            aria-label={showPassword ? 'hide password' : 'show password'}
+                                                            onClick={handleClickShowPassword}
+                                                            edge="end"
+                                                        >
+                                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                }
+                                            />
+                                        </FormControl>
                                         {loginErrors.password && <p className="error error-form" >{loginErrors.password.message}</p>}
                                     </div>
                                 </div>
@@ -147,7 +172,7 @@ export default function LoginModal({ onClose, onSuccess }: ModalProps) {
                         >
                             Login
                         </button>
-                        &nbsp;&nbsp;/ Registrtion</h2>
+                            &nbsp;&nbsp;/ Registrtion</h2>
 
                         <form onSubmit={handleRegisterSubmit(onRegisterSubmit)}>
                             <div className="grid md:justify-content-center p-0-20">
@@ -172,25 +197,56 @@ export default function LoginModal({ onClose, onSuccess }: ModalProps) {
                                         {registerErrors.email && <p className="error error-form">{registerErrors.email.message}</p>}
                                     </div>
                                     <div className="mb-3 input-set max-w-18rem md:min-w-full col">
-                                        <TextField
-                                            label={`Password`}
-                                            fullWidth
-                                            {...registerRegister('password', {
-                                                required: 'Пароль обязателен',
-                                                minLength: { value: 6, message: 'Минимум 6 символов' },
-                                            })}
-                                        />
+                                        <FormControl fullWidth variant="outlined">
+                                            <InputLabel shrink>Password</InputLabel>
+
+                                            <OutlinedInput
+                                                label="Password"
+                                                type={showPassword ? 'text' : 'password'}
+                                                {...registerRegister('password', {
+                                                    required: 'Пароль обязателен',
+                                                    minLength: { value: 6, message: 'Минимум 6 символов' },
+                                                })}
+                                                endAdornment={
+                                                    <InputAdornment position="end">
+                                                        <IconButton
+                                                            aria-label={showPassword ? 'hide password' : 'show password'}
+                                                            onClick={handleClickShowPassword}
+                                                            edge="end"
+                                                        >
+                                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                }
+                                            />
+                                        </FormControl>
+
                                         {registerErrors.password && <p className="error error-form" >{registerErrors.password.message}</p>}
                                     </div>
                                     <div className="mb-3 input-set max-w-18rem md:min-w-full col">
-                                        <TextField
-                                            label={`Confirm Password`}
-                                            fullWidth
-                                            {...registerRegister('confirmPassword', {
-                                                validate: value =>
-                                                    value === watch('password') || 'Пароли не совпадают',
-                                            })}
-                                        />
+                                        <FormControl fullWidth variant="outlined">
+                                            <InputLabel shrink>Password</InputLabel>
+
+                                            <OutlinedInput
+                                                label="Password"
+                                                type={showConfirmPassword ? 'text' : 'password'}
+                                                {...registerRegister('confirmPassword', {
+                                                    validate: value =>
+                                                        value === watch('password') || 'Пароли не совпадают',
+                                                })}
+                                                endAdornment={
+                                                    <InputAdornment position="end">
+                                                        <IconButton
+                                                            aria-label={showConfirmPassword ? 'hide password' : 'show password'}
+                                                            onClick={handleClickShowConfirmPassword}
+                                                            edge="end"
+                                                        >
+                                                            {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                }
+                                            />
+                                        </FormControl>
                                         {registerErrors.confirmPassword && <p className="error error-form" >{registerErrors.confirmPassword.message}</p>}
                                     </div>
                                 </div>
