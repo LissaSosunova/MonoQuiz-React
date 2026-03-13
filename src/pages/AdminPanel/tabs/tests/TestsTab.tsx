@@ -15,6 +15,7 @@ import { languages, type Language } from '../../../../shared/interfaces/translat
 import { useRef } from 'react';
 import { TestCreateSchema, type TestCreateForm } from '../../../../shared/validators/tests.validation';
 import QuestionItem from './questionItem';
+import { showToast } from '../../../../shared/ui/toast';
 
 export default function TestsTab() {
   const fileInputRef = useRef<HTMLInputElement | null>(null)
@@ -25,6 +26,7 @@ export default function TestsTab() {
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors }
   } = useForm<TestCreateForm>({
     resolver: zodResolver(TestCreateSchema),
@@ -40,6 +42,7 @@ export default function TestsTab() {
     }
   })
 
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'questions'
@@ -47,6 +50,11 @@ export default function TestsTab() {
 
   const calcType = watch('calculationScheme.type')
   const imageValue = watch('image')
+  const nameValues = watch('name')
+  const descriptionValues = watch('description')
+  const typeValues = watch('type')
+  const categotyValues = watch('category')
+
 
   // JSON import
   const handleJsonUpload = (
@@ -62,20 +70,12 @@ export default function TestsTab() {
         const parsed = JSON.parse(
           event.target?.result as string
         )
+        const validated = TestCreateSchema.parse(parsed)
+        reset(validated)
 
-        const validated =
-          TestCreateSchema.parse(parsed)
-
-        Object.entries(validated).forEach(
-          ([key, value]) => {
-            setValue(
-              key as keyof TestCreateForm,
-              value
-            )
-          }
-        )
       } catch (error) {
         alert('Invalid JSON structure')
+        showToast.error('Invalid JSON structure')
       }
     }
 
@@ -84,12 +84,16 @@ export default function TestsTab() {
   // Open modal btn
   const handleOpenImagePopup = () => {
     console.log('Open image selector popup')
+
     // TODO: later
   }
 
   // Submith
   const onSubmit = (data: TestCreateForm) => {
     console.log('VALID DATA:', data)
+    showToast.success('VALID JSON structure')
+
+
   }
 
 
@@ -98,6 +102,28 @@ export default function TestsTab() {
       <Typography variant="h4" gutterBottom>
         Create Test
       </Typography>
+      {/* ===================== */}
+      {/* JSON IMPORT           */}
+      {/* ===================== */}
+
+      <Paper sx={{ p: 3, mb: 4 }}>
+        <Typography variant="h6" gutterBottom>
+          JSON Import
+        </Typography>
+
+        <Button
+          variant="outlined"
+          component="label"
+        >
+          Import JSON
+          <input
+            type="file"
+            hidden
+            accept="application/json"
+            onChange={handleJsonUpload}
+          />
+        </Button>
+      </Paper>
 
       <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
 
@@ -112,8 +138,8 @@ export default function TestsTab() {
           <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
 
             {languages.map((lang: Language) => (
-              <Grid size={4}>
-                <Box key={lang} sx={{ mb: 3 }} >
+              <Grid size={4} key={lang}>
+                <Box sx={{ mb: 3 }} >
                   <Typography variant="subtitle1">
                     {lang.toUpperCase()}
                   </Typography>
@@ -124,6 +150,11 @@ export default function TestsTab() {
                     fullWidth
                     sx={{ mb: 2 }}
                     {...register(`name.${lang}`)}
+                    slotProps={{
+                      inputLabel: {
+                        shrink: !!nameValues?.[lang]
+                      },
+                    }}
                   />
 
                   <TextField
@@ -133,6 +164,11 @@ export default function TestsTab() {
                     multiline
                     rows={3}
                     {...register(`description.${lang}`)}
+                    slotProps={{
+                      inputLabel: {
+                        shrink: !!descriptionValues?.[lang]
+                      },
+                    }}
                   />
                 </Box>
               </Grid>
@@ -161,6 +197,11 @@ export default function TestsTab() {
                 label="Type"
                 fullWidth
                 {...register('type')}
+                slotProps={{
+                  inputLabel: {
+                    shrink: !!typeValues
+                  },
+                }}
               >
                 <MenuItem value="quiz">Quiz</MenuItem>
                 <MenuItem value="psychological">Psychological</MenuItem>
@@ -173,6 +214,11 @@ export default function TestsTab() {
                 required
                 fullWidth
                 {...register('category')}
+                slotProps={{
+                  inputLabel: {
+                    shrink: !!categotyValues
+                  },
+                }}
               />
             </Grid>
 
@@ -276,30 +322,6 @@ export default function TestsTab() {
             onClick={() => append(createEmptyQuestion())}
           >
             Add Question
-          </Button>
-        </Paper>
-
-
-        {/* ===================== */}
-        {/* JSON IMPORT           */}
-        {/* ===================== */}
-
-        <Paper sx={{ p: 3, mb: 4 }}>
-          <Typography variant="h6" gutterBottom>
-            JSON Import
-          </Typography>
-
-          <Button
-            variant="outlined"
-            component="label"
-          >
-            Import JSON
-            <input
-              type="file"
-              hidden
-              accept="application/json"
-              onChange={handleJsonUpload}
-            />
           </Button>
         </Paper>
 

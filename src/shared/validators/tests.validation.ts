@@ -6,7 +6,7 @@ import { QuestionSchema } from './question.schema';
 
 export const TestCreateSchema = z.object({
   name: TranslationSchema,
-  description: TranslationSchema,
+  description: TranslationSchema.optional(),
 
   type: z.string().min(1, 'Type required'),
   category: z.string().min(1, 'Category required'),
