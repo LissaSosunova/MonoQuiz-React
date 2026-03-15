@@ -1,9 +1,10 @@
 import { http } from "./http";
-import {type Category} from '../shared/interfaces/categories';
+import { type Category } from '../shared/interfaces/categories';
 
 export const CategoriesAPI = {
-  getAll() {
-    return http.get(`/category`);
+  async getAll(): Promise<Category[]> {
+    const { data } = await http.get<Category[]>(`/category`)
+    return data
   },
   create(data: Category) {
     return http.post('/category/create', data)
