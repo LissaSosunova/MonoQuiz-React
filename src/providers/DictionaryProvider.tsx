@@ -10,17 +10,28 @@ export function DictionaryProvider({ children }: { children: React.ReactNode }) 
   const [categories, setCategories] = useState<any[]>([])
   const [tests, setTests] = useState<any[]>([])
 
+  const reloadTypes = async () => {
+    const data = await TypesAPI.getAll()
+    setTypes(data)
+  }
+
+  const reloadCategories = async () => {
+    const data = await CategoriesAPI.getAll()
+    setCategories(data)
+  }
+
+  const reloadTests = async () => {
+    const data = await TestsAPI.getAll()
+    setTests(data)
+  }
+
   useEffect(() => {
     async function load() {
-      const [typesData, categoriesData, testsData] = await Promise.all([
-        TypesAPI.getAll(),
-        CategoriesAPI.getAll(),
-        TestsAPI.getAll()
+      await Promise.all([
+        reloadTypes(),
+        reloadCategories(),
+        reloadTests()
       ])
-
-      setTypes(typesData)
-      setCategories(categoriesData)
-      setTests(testsData)
     }
 
     load()
@@ -31,7 +42,10 @@ export function DictionaryProvider({ children }: { children: React.ReactNode }) 
       value={{
         types,
         categories,
-        tests
+        tests,
+        reloadTypes,
+        reloadCategories,
+        reloadTests
       }}
     >
       {children}

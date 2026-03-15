@@ -16,15 +16,18 @@ import { useRef } from 'react'
 import { TestCreateSchema, type TestCreateForm } from '../../../../shared/validators/tests.validation'
 import QuestionItem from './questionItem'
 import { showToast } from '../../../../shared/ui/toast'
-import { useDictionaries } from '../../../../hooks/useDictionaries'
 import { useTranslation } from 'react-i18next'
 import { Controller } from "react-hook-form"
 import { TestsAPI } from '../../../../api/tests.api'
+import { useContext } from 'react'
+import { DictionaryContext } from '../../../../context/DictionaryContext'
+import { useDictionaries } from '../../../../hooks/useDictionaries'
 
 export default function TestsTab() {
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const { i18n } = useTranslation()
   const currentLang = i18n.language
+  const { reloadTests } = useContext(DictionaryContext)
 
   const {
     control,
@@ -101,8 +104,8 @@ export default function TestsTab() {
   // Submith
   const onSubmit = async (data: TestCreateForm) => {
     try {
-      const res = await TestsAPI.create(data)
-
+      await TestsAPI.create(data)
+      await reloadTests()
       showToast.success('Test created')
     } catch (e: any) {
       showToast.error(e?.response?.data?.message || 'Create failed')

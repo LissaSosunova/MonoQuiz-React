@@ -5,29 +5,27 @@ import { TypeRow } from './TypeRow'
 import { NewTypeRow } from './NewTypeRow'
 import { showToast } from '../../../../shared/ui/toast'
 import { languages, type Language } from '../../../../shared/interfaces/translations'
+import { useContext } from 'react'
+import { DictionaryContext } from '../../../../context/DictionaryContext'
+import { useDictionaries } from '../../../../hooks/useDictionaries'
 
 export default function TypesTab() {
-  const [types, setTypes] = useState<Type[]>([])
+
   const [creating, setCreating] = useState(false)
   const [loadingId, setLoadingId] = useState<string | null>(null)
+  const { reloadTypes } = useContext(DictionaryContext)
+  const { types } = useDictionaries()
 
-  useEffect(() => {
-    TypesAPI.getAll().then(res => setTypes(res))
-  }, [])
 
   const handleSaveRow = async (updated: Type) => {
     try {
       setLoadingId(updated._id!)
-      const res = await TypesAPI.edit(updated._id!, {
+      await TypesAPI.edit(updated._id!, {
         slug: updated.slug,
         title: updated.title,
         description: updated.description
       })
-
-      setTypes(prev =>
-        prev.map(t => (t._id === updated._id ? res.data : t))
-      )
-
+      await reloadTypes()
       showToast.success('Saved')
     } catch (e: any) {
       showToast.error(e?.response?.data?.message || 'Save failed')
@@ -40,8 +38,8 @@ export default function TypesTab() {
     try {
       const res = await TypesAPI.create(data)
 
-      setTypes(prev => [res.data, ...prev])
       setCreating(false)
+      await reloadTypes()
 
       showToast.success('Type created')
     } catch (e: any) {
@@ -94,11 +92,6 @@ export default function TypesTab() {
           </tbody>
         </table>
       </div>
-
-
-
-
-
     </>
   )
 }
