@@ -1,32 +1,30 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { CategoriesAPI } from '../../../../api/categories.api'
 import { type Type } from '../../../../shared/interfaces/types'
 import { CategoryRow } from './CategoryRow'
 import { NewCategoryRow } from './NewCategoryRow'
 import { showToast } from '../../../../shared/ui/toast'
 import { languages, type Language } from '../../../../shared/interfaces/translations'
+import { useContext } from 'react'
+import { DictionaryContext } from '../../../../context/DictionaryContext'
+import { useDictionaries } from '../../../../hooks/useDictionaries'
 
 export default function TypesTab() {
-  const [types, setTypes] = useState<Type[]>([])
+
+  const { categories } = useDictionaries()
+  const { reloadCategories } = useContext(DictionaryContext)
   const [creating, setCreating] = useState(false)
   const [loadingId, setLoadingId] = useState<string | null>(null)
-
-  useEffect(() => {
-    CategoriesAPI.getAll().then(res => setTypes(res))
-  }, [])
 
   const handleSaveRow = async (updated: Type) => {
     try {
       setLoadingId(updated._id!)
-      const res = await CategoriesAPI.edit(updated._id!, {
+      await CategoriesAPI.edit(updated._id!, {
         slug: updated.slug,
         title: updated.title,
         description: updated.description
       })
-
-      setTypes(prev =>
-        prev.map(t => (t._id === updated._id ? res.data : t))
-      )
+      await reloadCategories()
 
       showToast.success('Saved')
     } catch (e: any) {
@@ -38,9 +36,8 @@ export default function TypesTab() {
 
   const handleCreate = async (data: Type) => {
     try {
-      const res = await CategoriesAPI.create(data)
-
-      setTypes(prev => [res.data, ...prev])
+      await CategoriesAPI.create(data)
+      await reloadCategories()
       setCreating(false)
 
       showToast.success('Type created')
@@ -83,7 +80,7 @@ export default function TypesTab() {
               />
             )}
 
-            {types.map(category => (
+            {categories.map(category => (
               <CategoryRow
                 key={category._id}
                 category={category}
