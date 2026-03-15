@@ -26,10 +26,10 @@ export function TypeRow({ type, onSave, isSaving }: Props) {
     setLocal(prev => {
       const updated = {
         ...prev,
-      [field]: {
-        ...prev[field],
-        [lang]: value
-      }
+        [field]: {
+          ...prev[field],
+          [lang]: value
+        }
       }
 
       setIsDirty(JSON.stringify(updated) !== JSON.stringify(type))
@@ -77,30 +77,30 @@ export function TypeRow({ type, onSave, isSaving }: Props) {
       </td>
 
       {languages.map((lang: Language) => (
-              <td key={lang}>
-                <div className="mb-3 input-set max-w-18rem md:min-w-full col">
-                  <TextField
-                    label={`Title`}
-                    fullWidth
-                    required
-                    value={local.title[lang]}
-                    onChange={e =>
-                      updateTranslation(lang, 'title', e.target.value)
-                    }
-                  />
-                </div>
-                <div className="mb-3 input-set max-w-18rem md:min-w-full col">
-                  <TextField
-                    label={`Description`}
-                    fullWidth
-                    value={local.description[lang]}
-                    onChange={e =>
-                      updateTranslation(lang, 'description', e.target.value)
-                    }
-                  />
-                </div>
-              </td>
-            ))}
+        <td key={lang}>
+          <div className="mb-3 input-set max-w-18rem md:min-w-full col">
+            <TextField
+              label={`Title`}
+              fullWidth
+              required
+              value={local.title[lang]}
+              onChange={e =>
+                updateTranslation(lang, 'title', e.target.value)
+              }
+            />
+          </div>
+          <div className="mb-3 input-set max-w-18rem md:min-w-full col">
+            <TextField
+              label={`Description`}
+              fullWidth
+              value={local.description[lang]}
+              onChange={e =>
+                updateTranslation(lang, 'description', e.target.value)
+              }
+            />
+          </div>
+        </td>
+      ))}
 
       <td>
         {isDirty && (

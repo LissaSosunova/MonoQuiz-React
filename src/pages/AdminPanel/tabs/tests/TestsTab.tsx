@@ -10,15 +10,21 @@ import {
 } from '@mui/material'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createEmptyTranslation, createEmptyQuestion } from '../../../../shared/helpers/test.helper';
-import { languages, type Language } from '../../../../shared/interfaces/translations';
-import { useRef } from 'react';
-import { TestCreateSchema, type TestCreateForm } from '../../../../shared/validators/tests.validation';
-import QuestionItem from './questionItem';
-import { showToast } from '../../../../shared/ui/toast';
+import { createEmptyTranslation, createEmptyQuestion } from '../../../../shared/helpers/test.helper'
+import { languages, type Language } from '../../../../shared/interfaces/translations'
+import { useRef } from 'react'
+import { TestCreateSchema, type TestCreateForm } from '../../../../shared/validators/tests.validation'
+import QuestionItem from './questionItem'
+import { showToast } from '../../../../shared/ui/toast'
+import { useDictionaries } from '../../../../hooks/useDictionaries'
+import { useTranslation } from 'react-i18next'
+import { Controller } from "react-hook-form"
+import { TestsAPI } from '../../../../api/tests.api'
 
 export default function TestsTab() {
   const fileInputRef = useRef<HTMLInputElement | null>(null)
+  const { i18n } = useTranslation()
+  const currentLang = i18n.language
 
   const {
     control,
@@ -27,7 +33,7 @@ export default function TestsTab() {
     setValue,
     watch,
     reset,
-    formState: { errors }
+    formState: { errors, isValid, isSubmitting }
   } = useForm<TestCreateForm>({
     resolver: zodResolver(TestCreateSchema),
     defaultValues: {
@@ -47,6 +53,10 @@ export default function TestsTab() {
     control,
     name: 'questions'
   })
+
+  const { types, categories } = useDictionaries()
+
+
 
   const calcType = watch('calculationScheme.type')
   const imageValue = watch('image')
@@ -89,13 +99,15 @@ export default function TestsTab() {
   }
 
   // Submith
-  const onSubmit = (data: TestCreateForm) => {
-    console.log('VALID DATA:', data)
-    showToast.success('VALID JSON structure')
+  const onSubmit = async (data: TestCreateForm) => {
+    try {
+      const res = await TestsAPI.create(data)
 
-
+      showToast.success('Test created')
+    } catch (e: any) {
+      showToast.error(e?.response?.data?.message || 'Create failed')
+    }
   }
-
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 10 }}>
@@ -191,34 +203,46 @@ export default function TestsTab() {
             alignItems: "stretch",
           }}>
             <Grid size={{ xs: 6, md: 4 }}>
-              <TextField
-                select
-                required
-                label="Type"
-                fullWidth
-                {...register('type')}
-                slotProps={{
-                  inputLabel: {
-                    shrink: !!typeValues
-                  },
-                }}
-              >
-                <MenuItem value="quiz">Quiz</MenuItem>
-                <MenuItem value="psychological">Psychological</MenuItem>
-              </TextField>
+              <Controller
+                name="type"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    select
+                    label="Type"
+                    disabled={!types.length}
+                    fullWidth
+                    {...field}
+                  >
+                    {types.map((type: any) => (
+                      <MenuItem key={type.id} value={type.slug}>
+                        {type.title[currentLang]}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                )}
+              />
             </Grid>
 
             <Grid size={{ xs: 12, md: 4 }}>
-              <TextField
-                label="Category"
-                required
-                fullWidth
-                {...register('category')}
-                slotProps={{
-                  inputLabel: {
-                    shrink: !!categotyValues
-                  },
-                }}
+              <Controller
+                name="category"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    select
+                    label="Category"
+                    disabled={!categories.length}
+                    fullWidth
+                    {...field}
+                  >
+                    {categories.map((category: any) => (
+                      <MenuItem key={category.id} value={category.slug}>
+                        {category.title[currentLang]}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                )}
               />
             </Grid>
 
@@ -247,22 +271,30 @@ export default function TestsTab() {
               <Typography variant="h6" gutterBottom>
                 Calculation Scheme
               </Typography>
-
-              <TextField
-                select
-                label="Calculation Type"
-                required
-                fullWidth
-                sx={{ mb: 2 }}
-                {...register('calculationScheme.type')}
-              >
-                <MenuItem value="sum">Sum</MenuItem>
-                <MenuItem value="formula">Formula</MenuItem>
-              </TextField>
-
+              <Controller
+                name="calculationScheme.type"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    sx={{ mb: 4 }}
+                    select
+                    label="Calculation Type"
+                    disabled={!categories.length}
+                    fullWidth
+                    {...field}
+                  >
+                    {['sum', 'formula'].map((type: any) => (
+                      <MenuItem key={type} value={type}>
+                        {type}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                )}
+              />
               <TextField
                 label="Formula"
                 fullWidth
+                disabled={calcType === 'sum'}
                 {...register('calculationScheme.formula')}
               />
             </Paper>
@@ -334,6 +366,7 @@ export default function TestsTab() {
             type="submit"
             variant="contained"
             size="large"
+            disabled={!isValid || isSubmitting}
           >
             Create Test
           </Button>

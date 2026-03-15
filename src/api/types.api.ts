@@ -1,9 +1,10 @@
 import { http } from "./http";
-import {type Type} from '../shared/interfaces/types';
+import { type Type } from '../shared/interfaces/types';
 
 export const TypesAPI = {
-  getAll() {
-    return http.get(`/types`);
+  async getAll(): Promise<Type[]> {
+    const { data } = await http.get<Type[]>('/types')
+    return data
   },
   create(data: Type) {
     return http.post('/types/create', data)

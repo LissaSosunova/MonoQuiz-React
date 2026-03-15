@@ -4,6 +4,7 @@ import { type Type } from '../../../../shared/interfaces/types'
 import { CategoryRow } from './CategoryRow'
 import { NewCategoryRow } from './NewCategoryRow'
 import { showToast } from '../../../../shared/ui/toast'
+import { languages, type Language } from '../../../../shared/interfaces/translations'
 
 export default function TypesTab() {
   const [types, setTypes] = useState<Type[]>([])
@@ -11,7 +12,7 @@ export default function TypesTab() {
   const [loadingId, setLoadingId] = useState<string | null>(null)
 
   useEffect(() => {
-    CategoriesAPI.getAll().then(res => setTypes(res.data))
+    CategoriesAPI.getAll().then(res => setTypes(res))
   }, [])
 
   const handleSaveRow = async (updated: Type) => {
@@ -65,9 +66,11 @@ export default function TypesTab() {
           <thead>
             <tr>
               <th>Slug</th>
-              <th>UA</th>
-              <th>EN</th>
-              <th>RU</th>
+              {languages.map((lang: Language) => (
+                <th key={lang}>
+                  {lang.toLocaleUpperCase()}
+                </th>
+              ))}
               <th>Actions</th>
             </tr>
           </thead>
