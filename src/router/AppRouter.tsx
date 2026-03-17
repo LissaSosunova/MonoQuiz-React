@@ -5,6 +5,7 @@ import AdminGuard from '../guards/AdminGuard'
 import UsersTab from '../pages/AdminPanel/tabs/UsersTab'
 import CategoriesTab from '../pages/AdminPanel/tabs/categories/CategoriesTab'
 import TestsTab from '../pages/AdminPanel/tabs/tests/TestsTab'
+import CreateTestsTab from '../pages/AdminPanel/tabs/tests/createTest'
 import TypesTab from '../pages/AdminPanel/tabs/types/TypesTab'
 
 const Home = lazy(() => import('../pages/Home/Home'))
@@ -50,7 +51,8 @@ export default function AppRouter() {
           <Route path="users" element={<UsersTab />} />
           <Route path="categories" element={<CategoriesTab />} />
           <Route path="types" element={<TypesTab />} />
-          <Route path="tests" element={<TestsTab />} />
+          <Route path="tests" element={<TestsTab />}>
+            <Route path="create" element={<CreateTestsTab />} /></Route>
         </Route>
 
 
