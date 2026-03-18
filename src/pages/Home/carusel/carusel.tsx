@@ -65,13 +65,13 @@ export function Carusel({ tests }: Props) {
             {/* Карусель */}
             <div
                 ref={scrollRef}
-                className="flex gap-4 overflow-x-auto scroll-smooth mt-4"
+                className="carousel-container"
                 style={{ scrollbarWidth: 'none' }} // скрыть scrollbar (Firefox)
             >
                 {tests.map((test, index) => (
                     <div
                         key={index}
-                        className="min-w-[200px] lg:col-4 md:col-6 flex-shrink-0"
+                        className="carousel-item"
                     >
                         <CaruselItem test={test} />
                     </div>
