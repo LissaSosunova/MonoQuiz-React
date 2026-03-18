@@ -96,69 +96,6 @@
     background: linear-gradient(0.25turn, var(--secondary-color), var(--secondary-color-dark));
 }
 
-/* Cards for all tests */
-.test-cards-wrapper-categories {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 12px;
-    padding: 20px;
-}
-
-@media (max-width: 915px) {
-    .test-cards-wrapper-categories {
-        grid-template-columns: 1fr 1fr !important;
-        padding: 20px 0px !important;
-    }
-}
-
-@media (max-width: 850px) {
-    .test-cards-wrapper-categories {
-        grid-template-columns: 1fr 1fr !important;
-        padding: 20px !important;
-    }
-}
-
-@media (max-width: 575px) {
-    .test-cards-wrapper-categories {
-        grid-template-columns: 1fr !important;
-    }
-}
-
-/* Cards for main page */
-.test-cards-wrapper {
-    position: relative;
-    overflow: hidden;
-    width: calc(100% - 20px);
-    margin: 0px 20px;
-}
-
-.test-cards-track {
-    display: flex;
-    transition: transform 0.3s ease-in-out;
-}
-
-/* Базовый вариант – 1 карточка на экран (мобильный) */
-.test-card-outer {
-    flex: 0 0 100%;
-    box-sizing: border-box;
-    padding: 10px 0.7rem;
-    margin: 7px 0px;
-}
-
-/* Средние экраны – 2 карточки */
-@media (min-width: 768px) {
-    .test-card-outer {
-        flex: 0 0 50%;
-    }
-}
-
-/* Большие экраны – 3 карточки */
-@media (min-width: 1200px) {
-    .test-card-outer {
-        flex: 0 0 33.3333%;
-    }
-}
-
 /* (опционально) дизейбл для стрелок */
 .rounded-btn.disabled {
     opacity: 0.4;
@@ -175,17 +112,12 @@
     height: 100%;
     align-content: start;
     border-radius: 12px;
+    display: flex;
     flex-direction: column;
     justify-content: space-between;
     box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
     background-color: rgba(248, 248, 248, 1);
-}
-
-.test-card .image-test-01 {
-    min-width: 120px;
-    min-height: 100px;
-    background-size: cover;
 }
 
 .test-card .test-price {
@@ -199,13 +131,16 @@
 
 .test-card .img-card {
     position: relative;
+    border-top-left-radius: 12px !important;
+    border-top-right-radius: 12px !important;
 }
 
 .test-card .img-card img {
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    width: auto;
-    max-width: 100%;
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-top-left-radius: 12px !important;
+    border-top-right-radius: 12px !important;
 }
 
 .test-card .img-card .time-block {
@@ -220,8 +155,12 @@
     align-items: center;
 }
 
-.test-card .img-card .time-block img {
+.test-card .img-card .time-block .time-block-time {
     margin-right: 2px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    width: unset;
+    height: unset;
 }
 
 .progress {
@@ -267,6 +206,10 @@
 
     .container-with-decor {
         margin-left: 25% !important;
+    }
+
+    .test-card .img-card img {
+        height: 230px;
     }
 
 }
@@ -461,4 +404,72 @@
     max-width: 22px;
     width: 22px;
     margin: auto;
+}
+
+.carousel-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 12px;
+}
+
+.carousel-container::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-item {
+    flex: 0 0 100%;
+}
+
+@media (max-width: 639px) {
+    .test-card .img-card img {
+        height: auto;
+    }
+
+    .carousel-item {
+        max-width: calc(100vw - 30px);
+    }
+}
+
+/* планшеты */
+@media (min-width: 640px) {
+    .carousel-item {
+        flex: 0 0 45%;
+    }
+
+    .test-card .img-card img {
+        height: 252px;
+    }
+}
+
+/* десктоп */
+@media (min-width: 1024px) {
+    .carousel-item {
+        flex: 0 0 30%;
+    }
+
+    .test-card .img-card img {
+        height: 150px;
+    }
+}
+
+/* широкие */
+@media (min-width: 1280px) {
+    .carousel-item {
+        flex: 0 0 23%;
+    }
+
+    .test-card .img-card img {
+        height: 150px;
+    }
+}
+
+.img-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.test-card section {
+    width: 100%;
 }
