@@ -204,6 +204,8 @@
 .test-card .img-card img {
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
+    width: auto;
+    max-width: 100%;
 }
 
 .test-card .img-card .time-block {
@@ -410,17 +412,20 @@
     justify-content: center;
 }
 
-.admin-table, .types-table {
+.admin-table,
+.types-table {
     border-collapse: collapse;
 }
 
-.admin-table thead, .types-table thead {
+.admin-table thead,
+.types-table thead {
     background: var(--primary-color-text);
     color: var(--primary-color);
     border-collapse: collapse;
 }
 
-.admin-table td, .types-table td {
+.admin-table td,
+.types-table td {
     border: 1px solid black;
     text-align: left;
     padding: 4px 8px;
@@ -439,13 +444,16 @@
     width: 110px;
     text-align: center;
 }
+
 .types-table td:first-child,
 .types-table thead tr th:first-child {
     max-width: 170px;
     width: 170px;
     text-align: center;
 }
-.admin-table thead tr th, .types-table thead tr th {
+
+.admin-table thead tr th,
+.types-table thead tr th {
     padding: 8px;
 }
 

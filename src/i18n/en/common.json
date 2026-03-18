@@ -19,7 +19,8 @@
     "description1": "Pick a test and unlock insights into your personality, intellect, habits, or emotional patterns.",
     "description2": "Instant results. Expert-designed. Affordable",
     "buttons": {
-        "BrowsAllTests": "Brows all tests"
+        "BrowsAllTests": "Brows all tests",
+        "All": "All"
     }
   },
   "FOOTER": {

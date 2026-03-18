@@ -1,20 +1,32 @@
 import { useTranslation } from 'react-i18next'
+import { Carusel } from '../Home/carusel/carusel'
+import { useDictionaries } from '../../hooks/useDictionaries'
 
 
 export default function Home() {
     const { t } = useTranslation();
+    const { types, categories, tests } = useDictionaries()
     return (
-       <div className="w-full bg-gradient-main flex justify-content-center">
+        <>
+            <div className="w-full bg-gradient-main flex justify-content-center">
                 <div className="flex flex-column lg:col-8 md:col-10 col-12 justify-content-center align-items-center mb-4">
                     <div className="text-center mb-4 p-2 md:p-0">
                         <h1 className="display-4">{t('HOME.header')}</h1>
                     </div>
                     <div className="col-10 md:col-12 flex flex-row align-items-center justify-content-center">
                         <p className="text-center">{t('HOME.description1')}
-                          <br />  {t('HOME.description2')}
+                            <br />  {t('HOME.description2')}
                         </p>
                     </div>
-                    <div className="flex justify-content-center">
+                </div>
+            </div >
+            <div className='w-full flex flex-column justify-content-center align-items-center'>
+                <div className="flex flex-column lg:col-8 md:col-10 col-12 justify-content-center align-items-center mb-4">
+                    {/* Carusel */}
+                    <Carusel tests={tests} />
+                </div>
+                
+                <div className="col-10 md:col-12 flex flex-row align-items-center justify-content-center">
                         <a href="/tests?page=1&from=10&itemsPerPage=10"
                             className="btn-main primary-btn">
                             <svg width="18"
@@ -28,7 +40,7 @@ export default function Home() {
                             {t('HOME.buttons.BrowsAllTests')}
                         </a>
                     </div>
-                </div>
-            </div >
+            </div>
+        </>
     )
 }
