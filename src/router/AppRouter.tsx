@@ -7,6 +7,7 @@ import CategoriesTab from '../pages/AdminPanel/tabs/categories/CategoriesTab'
 import TestsTab from '../pages/AdminPanel/tabs/tests/TestsTab'
 import CreateTestsTab from '../pages/AdminPanel/tabs/tests/createTest'
 import TypesTab from '../pages/AdminPanel/tabs/types/TypesTab'
+import TestsTable from '../pages/AdminPanel/tabs/tests/testsTable'
 
 const Home = lazy(() => import('../pages/Home/Home'))
 const Categories = lazy(() => import('../pages/Categories/Categories'))
@@ -52,7 +53,9 @@ export default function AppRouter() {
           <Route path="categories" element={<CategoriesTab />} />
           <Route path="types" element={<TypesTab />} />
           <Route path="tests" element={<TestsTab />}>
-            <Route path="create" element={<CreateTestsTab />} /></Route>
+            <Route path="all" element={<TestsTable />} />
+            <Route path=":id" element={<CreateTestsTab />} />
+          </Route>
         </Route>
 
 

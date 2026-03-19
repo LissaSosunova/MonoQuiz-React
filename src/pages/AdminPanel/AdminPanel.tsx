@@ -17,7 +17,7 @@ export default function AdminPanel() {
         <NavLink to="types" className="tab">
           {t('ADMINPANNEL.Types')}
         </NavLink>
-        <NavLink to="tests" className="tab">
+        <NavLink to="tests/all" className="tab">
           {t('ADMINPANNEL.Tests')}
         </NavLink>
       </nav>

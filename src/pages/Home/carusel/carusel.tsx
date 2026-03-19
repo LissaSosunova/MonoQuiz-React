@@ -14,12 +14,15 @@ export function Carusel({ tests }: Props) {
     const scroll = (direction: 'left' | 'right') => {
         if (!scrollRef.current) return
 
-        const scrollAmount = 300 // ширина прокрутки
-        scrollRef.current.scrollBy({
+        const container = scrollRef.current
+        const scrollAmount = container.clientWidth * 0.8
+
+        container.scrollBy({
             left: direction === 'left' ? -scrollAmount : scrollAmount,
             behavior: 'smooth'
         })
     }
+
 
     return (
         <>
@@ -66,7 +69,7 @@ export function Carusel({ tests }: Props) {
             <div
                 ref={scrollRef}
                 className="carousel-container"
-                style={{ scrollbarWidth: 'none' }} // скрыть scrollbar (Firefox)
+                style={{ scrollbarWidth: 'none' }}
             >
                 {tests.map((test, index) => (
                     <div

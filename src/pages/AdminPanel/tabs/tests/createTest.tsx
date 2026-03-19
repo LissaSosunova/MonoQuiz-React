@@ -23,13 +23,21 @@ import { useContext } from 'react'
 import { DictionaryContext } from '../../../../context/DictionaryContext'
 import { useDictionaries } from '../../../../hooks/useDictionaries'
 import { ImageCropModal } from '../../../../components/ImageCropModal'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect } from 'react'
+import { getImageUrl } from '../../../../shared/helpers/getImage'
+
 
 export default function CreateTestsTab() {
+    const { id } = useParams()
+    const isCreate = id === 'create'
     const fileInputRef = useRef<HTMLInputElement | null>(null)
     const { i18n } = useTranslation()
     const currentLang = i18n.language
     const { reloadTests } = useContext(DictionaryContext)
+    const { tests } = useDictionaries()
+
+    const currentTest = tests.find(test => test._id === id)
 
     const {
         control,
@@ -52,6 +60,25 @@ export default function CreateTestsTab() {
             image: ''
         }
     })
+
+
+    useEffect(() => {
+        if (!isCreate && currentTest) {
+            reset({
+                name: currentTest.name,
+                description: currentTest.description,
+                type: currentTest.type,
+                category: currentTest.category,
+                calculationScheme: currentTest.calculationScheme,
+                questions: currentTest.questions,
+                price: currentTest.price ?? 0,
+                image: currentTest.image || ''
+            })
+
+            setImage(currentTest.image || null)
+        }
+    }, [currentTest, isCreate, reset])
+
 
     const navigate = useNavigate()
     const { fields, append, remove } = useFieldArray({
@@ -105,21 +132,24 @@ export default function CreateTestsTab() {
 
     // Submith
     const onSubmit = async (data: TestCreateForm) => {
-        try {
+        if (isCreate) {
             await TestsAPI.create(data)
-            await reloadTests()
             showToast.success('Test created')
-            navigate('/admin-panel/tests')
-        } catch (e: any) {
-            showToast.error(e?.response?.data?.message || 'Create failed')
+        } else {
+            await TestsAPI.update(id!, data)
+            showToast.success('Test updated')
         }
+        navigate('/admin-panel/tests/all')
+        await reloadTests()
+
     }
 
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 10 }}>
             <Typography variant="h4" gutterBottom>
-                Create Test
+                {isCreate ? 'Create Test' : 'Edit Test'}
             </Typography>
+
             {/* ===================== */}
             {/* JSON IMPORT           */}
             {/* ===================== */}
@@ -320,7 +350,7 @@ export default function CreateTestsTab() {
                                 alignItems: "center",
                             }}
                                 direction="column">
-                                {image && <img src={image} width={200} />}
+                                {image && <img src={getImageUrl(image)} width={200} />}
 
                                 <Button onClick={() => handleOpenImagePopup(true)}
                                     variant="outlined">
@@ -330,9 +360,9 @@ export default function CreateTestsTab() {
                                 <ImageCropModal
                                     open={open}
                                     onClose={() => handleOpenImagePopup(false)}
-                                    onSelect={(img) => {
-                                        setImage(img)
-                                        setValue('image', img) // 👈 ВАЖНО
+                                    onSelect={(imgId) => {
+                                        setImage(imgId)
+                                        setValue('image', imgId) // 👈 ВАЖНО
                                         handleOpenImagePopup(false)
                                     }}
                                 />
@@ -373,16 +403,10 @@ export default function CreateTestsTab() {
                 {/* ===================== */}
 
                 <Box sx={{ textAlign: 'right' }}>
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        size="large"
-                        disabled={!isValid || isSubmitting}
-                    >
-                        Create Test
+                    <Button type="submit" variant="contained" size="large" disabled={!isValid || isSubmitting}>
+                        {isCreate ? 'Create Test' : 'Save Changes'}
                     </Button>
                 </Box>
-
             </Box>
         </Container>
     )

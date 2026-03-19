@@ -135,13 +135,6 @@
     border-top-right-radius: 12px !important;
 }
 
-.test-card .img-card img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    border-top-left-radius: 12px !important;
-    border-top-right-radius: 12px !important;
-}
 
 .test-card .img-card .time-block {
     position: absolute;
@@ -191,9 +184,6 @@
 
 }
 
-.marg-with-decor {
-    margin-left: 3%;
-}
 
 @media screen and (min-width: 1200px) {
     .with-column {
@@ -208,45 +198,11 @@
         margin-left: 25% !important;
     }
 
-    .test-card .img-card img {
-        height: 230px;
-    }
-
 }
 
-@media screen and (min-width: 768px) and (max-width: 1199px) {
-    .marg-with-decor {
-        margin-left: 20% !important;
-    }
-}
-
-@media screen and (min-width: 200px) and (max-width: 1199px) {
-    .with-column {
-        column-count: 1;
-    }
-
-}
-
-@media (max-width: 767px) {
-
-    .marg-with-decor {
-        margin-left: 0px !important;
-    }
-
-    .contaner-with-decor {
-        justify-content: center;
-    }
-}
 
 .min-height-25vw {
     min-height: 25vw;
-}
-
-.decor-side {
-    background: linear-gradient(0.25turn, var(--secondary-color), var(--secondary-color-dark));
-    display: none;
-    width: calc(25% - 120px);
-    margin-right: 120px;
 }
 
 .container-with-decor {
@@ -356,19 +312,22 @@
 }
 
 .admin-table,
-.types-table {
+.types-table,
+.tests-table {
     border-collapse: collapse;
 }
 
 .admin-table thead,
-.types-table thead {
+.types-table thead,
+.tests-table thead {
     background: var(--primary-color-text);
     color: var(--primary-color);
     border-collapse: collapse;
 }
 
 .admin-table td,
-.types-table td {
+.types-table td,
+.tests-table td  {
     border: 1px solid black;
     text-align: left;
     padding: 4px 8px;
@@ -382,7 +341,9 @@
 }
 
 .types-table td:last-child,
-.types-table thead tr th:last-child {
+.types-table thead tr th:last-child,
+.tests-table td:last-child,
+.tests-table thead tr th:last-child {
     max-width: 110px;
     width: 110px;
     text-align: center;
@@ -395,8 +356,15 @@
     text-align: center;
 }
 
+.tests-table td:first-child,
+.tests-table thead tr th:first-child {
+    max-width: 230px;
+    width: 230px;
+    text-align: center;
+}
 .admin-table thead tr th,
-.types-table thead tr th {
+.types-table thead tr th,
+.tests-table thead tr th {
     padding: 8px;
 }
 
@@ -410,7 +378,9 @@
     display: flex;
     overflow-x: auto;
     scroll-behavior: smooth;
-    gap: 12px;
+    gap: 14px;
+    max-width: 100vw;
+    padding-left: 12px;
 }
 
 .carousel-container::-webkit-scrollbar {
@@ -419,6 +389,7 @@
 
 .carousel-item {
     flex: 0 0 100%;
+    padding-top: 12px;
 }
 
 @media (max-width: 639px) {
@@ -427,7 +398,7 @@
     }
 
     .carousel-item {
-        max-width: calc(100vw - 30px);
+        max-width: calc(100vw - 60px);
     }
 }
 
@@ -445,29 +416,23 @@
 /* десктоп */
 @media (min-width: 1024px) {
     .carousel-item {
-        flex: 0 0 30%;
-    }
-
-    .test-card .img-card img {
-        height: 150px;
+        flex: 0 0 32.3%;
     }
 }
 
 /* широкие */
-@media (min-width: 1280px) {
+@media (min-width: 1980px) {
     .carousel-item {
-        flex: 0 0 23%;
-    }
-
-    .test-card .img-card img {
-        height: 150px;
+        flex: 0 0 24.3%;
     }
 }
 
-.img-card img {
+.test-card .img-card img {
     width: 100%;
-    height: 180px;
+    height: auto;
     object-fit: cover;
+    border-top-left-radius: 12px !important;
+    border-top-right-radius: 12px !important;
 }
 
 .test-card section {
