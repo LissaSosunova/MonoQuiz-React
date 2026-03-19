@@ -65,7 +65,7 @@ export const ImageCropModal = ({ open, onClose, onSelect }: ImageModalProps) => 
 
         try {
             const saved = await ImagesAPI.create({ data: base64 })
-            onSelect(saved.data.data)
+            onSelect(saved.data._id)
 
             onClose()
         } catch (err) {
@@ -115,7 +115,7 @@ export const ImageCropModal = ({ open, onClose, onSelect }: ImageModalProps) => 
                                 width={80}
                                 style={{ cursor: 'pointer' }}
                                 onClick={() => {
-                                    onSelect(img.data)
+                                    onSelect(img._id)
                                     onClose()
                                 }}
                             />

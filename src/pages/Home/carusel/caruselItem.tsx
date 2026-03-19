@@ -1,6 +1,7 @@
 import { languages, type Language } from '../../../shared/interfaces/translations'
 import { type Test } from '../../../shared/interfaces/test'
 import { useTranslation } from 'react-i18next'
+import { getImageUrl } from '../../../shared/helpers/getImage'
 
 
 type Props = {
@@ -22,9 +23,7 @@ export function CaruselItem({ test }: Props) {
                 className="time-block-time" />
               40 m
             </div>
-            <img src={test.image}
-              className=""
-               />
+            <img src={getImageUrl(test.image)} width={200} />
           </div>
           <div className="">
             <h5 className="text-left pl-2 pr-2">{test?.name[currentLang]}</h5>
