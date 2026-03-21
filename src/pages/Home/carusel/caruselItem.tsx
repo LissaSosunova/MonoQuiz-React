@@ -27,10 +27,9 @@ export function CaruselItem({ test }: Props) {
           </div>
           <div className="">
             <h5 className="text-left pl-2 pr-2">{test?.name[currentLang]}</h5>
-            <p className="mt-3 text-left pl-2 pr-2">{test?.description[currentLang]}</p>
+            <p className="text-left pl-2 pr-2">{test?.description[currentLang]}</p>
           </div>
-
-          <div className="col flex justify-content-between mb-2">
+          <div className="col flex justify-content-between mt-auto">
             <div className="col-fixed">
               <span className="test-price col">${test.price}</span>
             </div>
@@ -44,6 +43,7 @@ export function CaruselItem({ test }: Props) {
             </div>
           </div>
         </section>
+
       </div>
     </>
   )

@@ -162,6 +162,10 @@ button {
     }
 }
 
+.active-filter {
+    background-color: var(--filter-button-focus);
+}
+
 .rounded-btn {
     min-width: 44px;
     max-width: 44px;
@@ -206,4 +210,9 @@ button {
 
 .arrow-left svg {
     transform: rotate(180deg) !important;
+}
+
+.arrow-left,
+.arrow-right {
+    border: 0;
 }

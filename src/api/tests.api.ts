@@ -1,11 +1,13 @@
-import { http } from "./http";
+import { http } from "./http"
+import { type Test } from '../shared/interfaces/test'
 
 
 export const TestsAPI = {
-  async getAll(): Promise<any[]> {
-      const { data } = await http.get<any[]>(`/tests/all`)
-      return data
-    },
+  getAll(category?: string): Promise<Test[]> {
+    return http.get('/tests/all', {
+      params: { category }
+    }).then(res => res.data);
+  },
   create(data: any) {
     return http.post('/tests/create', data)
   },
