@@ -15,6 +15,6 @@ export const TestsAPI = {
     return http.put(`/tests/update/${id}`, data)
   },
   delete(id: string) {
-    return http.put(`/tests/delete/${id}`)
+    return http.delete(`/tests/delete/${id}`)
   },
 };

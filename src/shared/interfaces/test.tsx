@@ -1,5 +1,6 @@
 import { type Translation } from './translations';
 import { type Question } from './question';
+import { type Result } from './results';
 
 export interface Test {
     name: Translation
@@ -10,5 +11,6 @@ export interface Test {
     image: string
     calculationScheme: string
     questions: Question[]
+    results: Result[]
     price: number | null
 }

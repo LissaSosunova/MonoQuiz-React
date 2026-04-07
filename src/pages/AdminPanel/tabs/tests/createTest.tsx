@@ -10,7 +10,7 @@ import {
 } from '@mui/material'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createEmptyTranslation, createEmptyQuestion } from '../../../../shared/helpers/test.helper'
+import { createEmptyTranslation, createEmptyQuestion, createEmptyResult } from '../../../../shared/helpers/test.helper'
 import { languages, type Language } from '../../../../shared/interfaces/translations'
 import { useRef, useState } from 'react'
 import { TestCreateSchema, type TestCreateForm } from '../../../../shared/validators/tests.validation'
@@ -26,6 +26,9 @@ import { ImageCropModal } from '../../../../components/ImageCropModal'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useEffect } from 'react'
 import { getImageUrl } from '../../../../shared/helpers/getImage'
+import ResultItem from './resultItem'
+import { type Result } from '../../../../shared/interfaces/results'
+import type { Answer } from '../../../../shared/interfaces/answer'
 
 
 export default function CreateTestsTab() {
@@ -56,11 +59,13 @@ export default function CreateTestsTab() {
             category: '',
             calculationScheme: { type: 'sum' },
             questions: [],
+            results: [createEmptyResult()],
             price: 0,
             image: ''
         }
     })
 
+    const [maxScore, setMaxScore] = useState(0);
 
     useEffect(() => {
         if (!isCreate && currentTest) {
@@ -71,6 +76,7 @@ export default function CreateTestsTab() {
                 category: currentTest.category,
                 calculationScheme: currentTest.calculationScheme,
                 questions: currentTest.questions,
+                results: currentTest.results,
                 price: currentTest.price ?? 0,
                 image: currentTest.image || ''
             })
@@ -85,6 +91,15 @@ export default function CreateTestsTab() {
         control,
         name: 'questions'
     })
+    const {
+        fields: resultFields,
+        append: appendResult,
+        remove: removeResult
+    } = useFieldArray({
+        control,
+        name: 'results'
+    })
+
 
     const { types, categories } = useDictionaries()
 
@@ -97,6 +112,34 @@ export default function CreateTestsTab() {
     const descriptionValues = watch('description')
     const typeValues = watch('type')
     const categotyValues = watch('category')
+    const questionsWatch = watch('questions')
+    const resultsWatch = watch('results')
+
+    useEffect(() => {
+        const total = questionsWatch?.reduce(
+            (sum: number, question: any) =>
+                sum +
+                (question.answers || []).reduce(
+                    (aSum: number, answer: Answer) =>
+                        aSum + Number(answer.score || 0),
+                    0
+                ),
+            0
+        );
+
+        setMaxScore(total || 0);
+    }, [questionsWatch]);
+
+    useEffect(() => {
+        if (!resultsWatch?.length) return;
+
+        const lastIndex = resultsWatch.length - 1;
+        const currentTo = resultsWatch[lastIndex]?.score?.to;
+
+        if (currentTo == null || currentTo === 0) {
+            setValue(`results.${lastIndex}.score.to`, maxScore);
+        }
+    }, [maxScore]);
 
 
     // JSON import
@@ -395,6 +438,30 @@ export default function CreateTestsTab() {
                         onClick={() => append(createEmptyQuestion())}
                     >
                         Add Question
+                    </Button>
+                </Paper>
+
+                {/* ===================== */}
+                {/* RESULTS             */}
+                {/* ===================== */}
+
+                <Paper sx={{ p: 3, mb: 4 }}>
+                    <Typography variant="h6" gutterBottom>
+                        Results
+                    </Typography>
+
+                    {resultFields.map((field: Result, resultIndex: number) => (
+                        <ResultItem
+                            key={resultIndex}
+                            control={control}
+                            register={register}
+                            resultIndex={resultIndex}
+                            max={maxScore}
+                            removeResult={removeResult}
+                        />
+                    ))}
+                    <Button variant="outlined" sx={{ mt: 1 }} onClick={() => appendResult(createEmptyResult())}>
+                        Add Result
                     </Button>
                 </Paper>
 
